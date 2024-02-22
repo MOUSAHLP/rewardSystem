@@ -7,19 +7,8 @@ use App\Http\Controllers\RankController;
 use App\Models\Achievement;
 use App\Models\User;
 use App\Models\AchievementUser;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
 
 // ============== points ============== //
 Route::group([
@@ -35,6 +24,7 @@ Route::group([
     Route::get('used/user/{user_id}', 'getUserUsedPoints');
 
     Route::get('/value', 'getPointsValue');
+    Route::post('/set-value', 'setPointsValue');
 });
 
 // ============== achievements ============== //
@@ -47,6 +37,7 @@ Route::group([
     Route::get('not-done/user/{user_id}', 'getUserNotDoneAchievements');
 
     Route::post('add-achievement', 'addAchievement');
+    Route::delete('delete-achievement', 'deleteAchievement');
 });
 
 // ============== coupons ============== //
@@ -64,7 +55,7 @@ Route::group([
     Route::group([
         'prefix' => "types",
     ], function () {
-        Route::get('', 'getCouponsTypes');
+        Route::get('/', 'getCouponsTypes');
         Route::get('/{type_id}', 'getCouponType');
         Route::get('/coupons/{type_id}', 'getTypeCoupons');
     });
@@ -79,13 +70,7 @@ Route::group([
     Route::get('/', 'getRanks');
     Route::get('/current_rank/{user_id}', 'getUserCurrentRank');
     Route::get('/next_rank/{user_id}', 'getUserNextRank');
-});
 
-Route::get("/",function () {
-    $achievement = Achievement::all()->random();
-    $user = User::all()->random();
-    $achievementsdone = AchievementUser::where("achievement_id" , $achievement->id)->where("user_id",$user->id)->count();
-    // $achievementsdone = AchievementUser::where("achievement_id" ,7)->where("user_id",4)->count();
-    return "achievement ". $achievement->id." <br> user ". $user->id." <br> "."achievementsdone ". $achievementsdone ." <br> ". $achievement->segments;
-});
+    // Route::post('/add_rank', 'addRank');
 
+});

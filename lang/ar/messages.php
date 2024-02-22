@@ -17,6 +17,7 @@ return [
 
     'alreadyExist'                  => 'موجود مسبقا',
     'invalidData'                  => 'بيانات خاطئة',
+    'dataNotFound'                  => 'بيانات غير موجودة',
 
     'routeNotFound'                  => 'الرابط غير موجود',
 

@@ -3,11 +3,11 @@
 namespace App\Http\Requests;
 
 use App\Traits\ApiResponser;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Foundation\Http\FormRequest;
 
-class AchievementRequest extends FormRequest
+class PointRequest extends FormRequest
 {
     use ApiResponser;
 
@@ -27,23 +27,14 @@ class AchievementRequest extends FormRequest
     public function rules(): array
     {
         return match ($this->route()->getActionMethod()) {
-            'addAchievement'   =>  $this->getaddAchievementRules(),
-            'deleteAchievement'   =>  $this->getdeleteAchievementRules(),
+            'setPointsValue'   =>  $this->getsetPointsValueRules(),
         };
 
     }
 
-    public function getaddAchievementRules(){
+    public function getsetPointsValueRules(){
         return [
-            'achievement_id' => 'required|exists:achievements,id',
-            'user_id' => 'required|exists:users,id'
-        ];
-    }
-
-    public function getdeleteAchievementRules(){
-        return [
-            'achievement_id' => 'required|exists:achievements,id',
-            'user_id' => 'required|exists:users,id'
+            'value' => 'required|numeric',
         ];
     }
 

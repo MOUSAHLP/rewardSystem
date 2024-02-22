@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PointRequest;
 use App\Models\Point;
 use App\Models\PointInSyrianPound;
 use App\Models\Rank;
@@ -105,5 +106,16 @@ class PointsController extends Controller
             'dataFetchedSuccessfully'
         );
     }
+
+    public function setPointsValue(PointRequest $request)
+    {
+        $validatedData = $request->validated();
+        $points_value = PointInSyrianPound::first()->update(["value"=>$request["value"]]);
+        return $this->successResponse(
+            $points_value,
+            'dataUpdatedSuccessfully'
+        );
+    }
+
 
 }

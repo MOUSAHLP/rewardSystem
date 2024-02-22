@@ -16,6 +16,7 @@ return [
     //General errors
     'alreadyExist'                  => 'Already Exist',
     'invalidData'                  => 'Invalid Data',
+    'dataNotFound'                  => 'Data Not Found',
 
 
 

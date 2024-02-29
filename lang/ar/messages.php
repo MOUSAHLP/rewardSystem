@@ -29,9 +29,23 @@ return [
 
     'false'                 => 'لا',
 
+    //users
+    "users" => [
+        "NotFound"=> "المستخدم غير موجودة",
+    ],
+
+    //coupons
+      "coupons" => [
+        "NoEnoughPoints"=> "النقاط غير كافية",
+    ],
+
     // Achievements
     "achievementAlreadyDone" => "الإنجاز مكتمل",
 
+    // Ranks
+    "Ranks" => [
+        "NotFound"=> "الرتبة غير موجودة",
+    ],
 
     //Auth msgs
     'passwordChangedSuccessfully'    => 'تم تغيير كلمة المرور بنجاح',

@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('coupon_code');
             $table->longText('description');
             $table->dateTime('created_at');
-            $table->dateTime('expire_at');
         });
 
         Schema::enableForeignKeyConstraints();

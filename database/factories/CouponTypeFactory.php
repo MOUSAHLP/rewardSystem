@@ -18,7 +18,8 @@ class CouponTypeFactory extends Factory
     {
         return [
             'name'=> $this->faker->name,
-            'image'=> $this->faker->filePath
+            'image'=> $this->faker->filePath,
+            'is_percentage'=> $this->faker->boolean
         ];
     }
 }

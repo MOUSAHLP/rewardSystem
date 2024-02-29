@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PointRequest;
-use App\Models\Point;
 use App\Models\PointInSyrianPound;
-use App\Models\Rank;
 use Illuminate\Http\Request;
 use App\Services\PointService;
 use App\Services\RankService;
@@ -18,6 +16,10 @@ class PointsController extends Controller
 
     public function getUserPoints(Request $request)
     {
+        if ($this->rankService->checkIfUserExists($request->user_id)) {
+            return $this->errorResponse("users.NotFound", 400);
+        }
+
         $user_valid_points = $this->pointService->getUserValidPoints($request->user_id);
         $user_expired_points = $this->pointService->getUserExpiredPoints($request->user_id);
         $user_used_points = $this->pointService->getUserUsedPoints($request->user_id);
@@ -35,7 +37,10 @@ class PointsController extends Controller
 
     public function getUserStatistics(Request $request)
     {
-        try {
+        if ($this->rankService->checkIfUserExists($request->user_id)) {
+            return $this->errorResponse("users.NotFound", 400);
+        }
+
             $user_points = $this->pointService->getUserPointsSum($request->user_id);
             $points_value = $this->pointService->getPointsValue($user_points);
             $user_rank = $this->rankService->getUserCurrentRank($user_points);
@@ -51,16 +56,14 @@ class PointsController extends Controller
                 $data,
                 'dataFetchedSuccessfully'
             );
-        } catch (\Throwable $th) {
-
-            return $this->errorResponse(
-                'somethingwentwrong'
-            );
-        }
     }
 
     public function getUserTotalPoints(Request $request)
     {
+        if ($this->rankService->checkIfUserExists($request->user_id)) {
+            return $this->errorResponse("users.NotFound", 400);
+        }
+
         $user_points = $this->pointService->getUserPointsSum($request->user_id);
         return $this->successResponse(
             $user_points,
@@ -70,6 +73,10 @@ class PointsController extends Controller
 
     public function getUserValidPoints(Request $request)
     {
+        if ($this->rankService->checkIfUserExists($request->user_id)) {
+            return $this->errorResponse("users.NotFound", 400);
+        }
+
         $user_valid_points = $this->pointService->getUserValidPoints($request->user_id);
 
         return $this->successResponse(
@@ -80,6 +87,10 @@ class PointsController extends Controller
 
     public function getUserExpiredPoints(Request $request)
     {
+        if ($this->rankService->checkIfUserExists($request->user_id)) {
+            return $this->errorResponse("users.NotFound", 400);
+        }
+
         $user_expired_points = $this->pointService->getUserExpiredPoints($request->user_id);
 
         return $this->successResponse(
@@ -90,6 +101,10 @@ class PointsController extends Controller
 
     public function getUserUsedPoints(Request $request)
     {
+        if ($this->rankService->checkIfUserExists($request->user_id)) {
+            return $this->errorResponse("users.NotFound", 400);
+        }
+
         $user_used_points = $this->pointService->getUserUsedPoints($request->user_id);
 
         return $this->successResponse(

@@ -12,7 +12,13 @@ class CouponPrice extends Model
     protected $table = 'coupon_prices';
     public $timestamps = false;
     protected $fillable = [
-        'coupon_points',
-        'coupon_value'
+        'coupon_id',
+        'coupon_price'
     ];
+
+    public function coupon()
+    {
+        return $this->has(Coupon::class);
+    }
+
 }

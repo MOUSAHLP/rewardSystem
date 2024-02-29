@@ -6,15 +6,14 @@ use App\Http\Requests\AchievementRequest;
 use App\Models\Achievement;
 use App\Models\AchievementUser;
 use App\Models\Point;
-use App\Models\User;
 use App\Services\AchievementService;
-use Carbon\Carbon;
-use DateTime;
-use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Http\Request;
 
 class AchievementController extends Controller
 {
+    public function __construct(private AchievementService $achievementService)
+    {
+    }
     public function getAllAchievements()
     {
         $achievements = Achievement::all();
@@ -48,14 +47,7 @@ class AchievementController extends Controller
 
         // if the Achievement is done add points to the User
         if ($is_done) {
-            $point = new Point();
-            $point->user_id = $validatedData['user_id'];
-            $point->points = $achievement->points;
-            $point->achievement_id = $validatedData['achievement_id'];
-            $point->created_at = Carbon::now()->format("Y-m-d H:i:s");
-            $point->used_at = null;
-            $point->expire_at = Carbon::now()->addDays(90)->format("Y-m-d H:i:s");
-            $point->save();
+            $this->achievementService->createPoint($validatedData,$achievement->points);
         }
 
         $data = [
@@ -81,12 +73,11 @@ class AchievementController extends Controller
         if($user_segments->first() == null)return $this->errorResponse('dataNotFound',404);
         $user_segments->first()->delete();
 
-        // if the points were added previously delete it
+        // if the points were added previously delete them
         $point = Point::where($validatedData)->first();
         if(isset($point)){
             $point->delete();
         }
-
 
         $data = [
             "achievement_segments" => $achievement->segments,
@@ -101,8 +92,11 @@ class AchievementController extends Controller
 
     public function getUserDoneAchievements(Request $request)
     {
-        $user_points = Point::where("user_id", $request->user_id)->get("achievement_id")->toArray();
-        $user_achievements = Achievement::whereIn("id", $user_points)->get();
+        if ($this->achievementService->checkIfUserExists($request->user_id)) {
+            return $this->errorResponse("users.NotFound", 400);
+        }
+
+        $user_achievements = $this->achievementService->getUserDoneAchievements($request->user_id);
 
         return $this->successResponse(
             $user_achievements,
@@ -112,12 +106,11 @@ class AchievementController extends Controller
 
     public function getUserNotDoneAchievements(Request $request)
     {
+        if ($this->achievementService->checkIfUserExists($request->user_id)) {
+            return $this->errorResponse("users.NotFound", 400);
+        }
 
-        $user_points = Point::where("user_id", $request->user_id)->get("achievement_id")->toArray();
-        $user_achievements = Achievement::whereNotIn("id", $user_points)
-            ->withCount(["achievementsDone" => function ($query) use ($request) {
-                $query->where('user_id', $request->user_id);
-            }])->get();
+        $user_achievements = $this->achievementService->getUserNotDoneAchievements($request->user_id);
 
         return $this->successResponse(
             $user_achievements,

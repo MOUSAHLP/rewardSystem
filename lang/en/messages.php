@@ -29,11 +29,24 @@ return [
     'true'                  => 'true',
     'false'                 => 'false',
 
+    //users
+    "users" => [
+        "NotFound" =>"User Not Found",
+    ],
+
+    //coupons
+    "coupons" => [
+        "NoEnoughPoints"=> "No Enough Points",
+    ],
     // Achievements
     "achievementAlreadyDone" => "Achievement Already Done",
 
+    // Ranks
+    "Ranks" => [
+        "NotFound" => "Rank Not Found",
+    ],
 
-     //Auth msgs
+    //Auth msgs
     'passwordChangedSuccessfully'    => 'Password changed successfully !',
     'userSuccessfullyRegistered'     => 'User successfully registered',
     'userSuccessfullySignedIn'       => 'User successfully signed in',

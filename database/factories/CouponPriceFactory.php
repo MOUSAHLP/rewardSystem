@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Coupon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +18,8 @@ class CouponPriceFactory extends Factory
     public function definition(): array
     {
         return [
-            'coupon_points'=> $this->faker->numberBetween(0, 1000),
-            'coupon_value'=> $this->faker->numberBetween(0, 1000),
+            'coupon_id'=> Coupon::all()->random()->id,
+            'coupon_price'=> $this->faker->numberBetween(0, 1000),
         ];
     }
 }

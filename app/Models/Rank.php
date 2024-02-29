@@ -18,4 +18,8 @@ class Rank extends Model
         'description',
         'color'
     ];
+
+    protected $casts = [
+        'features' => 'array'
+    ];
 }

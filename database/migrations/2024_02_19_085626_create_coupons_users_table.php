@@ -16,10 +16,11 @@ return new class extends Migration
         Schema::create('coupons_users', function (Blueprint $table) {
              $table->bigIncrements("id");
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->unsignedBigInteger('coupon_id');
-            $table->foreign('coupon_id')->references('id')->on('coupons');
-            $table->boolean('is_used');
+            $table->foreign('coupon_id')->references('id')->on('coupons')->cascadeOnDelete();
+            $table->dateTime('used_at')->nullable();
+            $table->dateTime('expire_at');
         });
 
         Schema::enableForeignKeyConstraints();

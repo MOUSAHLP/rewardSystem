@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::create('coupon_prices', function (Blueprint $table) {
-             $table->bigIncrements("id");
-            $table->bigInteger('coupon_points');
-            $table->bigInteger('coupon_value');
+            $table->bigIncrements("id");
+            $table->unsignedBigInteger('coupon_id');
+            $table->foreign('coupon_id')->references('id')->on('coupons')->cascadeOnDelete();
+            $table->bigInteger('coupon_price');
         });
 
         Schema::enableForeignKeyConstraints();

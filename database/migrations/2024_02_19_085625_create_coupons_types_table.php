@@ -17,6 +17,7 @@ return new class extends Migration
              $table->bigIncrements("id");
             $table->string('name');
             $table->string('image');
+            $table->boolean('is_percentage');
         });
 
         Schema::enableForeignKeyConstraints();

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->bigInteger('points');
+            $table->bigInteger('used_points')->default(0);
             $table->unsignedBigInteger('achievement_id');
             $table->foreign('achievement_id')->references('id')->on('achievements');
             $table->dateTime('created_at');

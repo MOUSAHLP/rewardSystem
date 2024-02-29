@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
              $table->bigIncrements("id");
             $table->string('name');
+            $table->string('password')->min(8);
             $table->timestamps();
         });
     }

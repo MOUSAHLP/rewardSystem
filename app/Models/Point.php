@@ -14,6 +14,7 @@ class Point extends Model
     protected $fillable=[
         'user_id',
         'points',
+        'used_points',
         'achievement_id',
         'created_at',
         'used_at',

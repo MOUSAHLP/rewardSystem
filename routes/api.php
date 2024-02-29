@@ -4,11 +4,21 @@ use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\PointsController;
 use App\Http\Controllers\RankController;
-use App\Models\Achievement;
-use App\Models\User;
-use App\Models\AchievementUser;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+// ============== get token ============== //
+Route::get('/get-token', function(Request $request){
+    if(Auth::attempt(["name"=>$request->name,"password"=>$request->password])){
+        $user = Auth::user();
+        return $user->createToken("MyApp")->accessToken;
+    }
+});
+
+// Route::group([
+//     "middleware"=>["auth:api","lang"]
+// ], function () {
 
 // ============== points ============== //
 Route::group([
@@ -50,14 +60,30 @@ Route::group([
     Route::get('used/user/{user_id}', 'getUserUsedCoupons');
     Route::get('expired/user/{user_id}', 'getUserExpiredCoupons');
 
-    Route::get('/prices', 'getCouponsPrices');
+    Route::post('/add', 'addCoupon');
+    Route::put('/update', 'updateCoupon');
+    Route::delete('/delete', 'deleteCoupon');
 
+    Route::post('/buy', 'buyCoupon');
+
+    // Coupons Prices
+    Route::get('/prices', 'getCouponsPrices');
+    Route::post('/add-price', 'addCouponsPrice');
+    Route::put('/update-price', 'updateCouponsPrice');
+    Route::delete('/delete-price', 'deleteCouponsPrice');
+
+    // Coupons Types
     Route::group([
         'prefix' => "types",
     ], function () {
         Route::get('/', 'getCouponsTypes');
         Route::get('/{type_id}', 'getCouponType');
         Route::get('/coupons/{type_id}', 'getTypeCoupons');
+
+        Route::post('/add-couponsType', 'addcouponsType');
+        Route::post('/update-couponsType', 'updatecouponsType');
+        Route::delete('/delete-couponsType', 'deletecouponsType');
+
     });
 
 });
@@ -68,9 +94,15 @@ Route::group([
     'prefix' => "ranks",
 ], function () {
     Route::get('/', 'getRanks');
+    Route::get('/{rank_id}', 'getRank');
+    Route::get('/{rank_id}/users', 'getRankUsers');
     Route::get('/current_rank/{user_id}', 'getUserCurrentRank');
     Route::get('/next_rank/{user_id}', 'getUserNextRank');
 
-    // Route::post('/add_rank', 'addRank');
+    Route::post('/add_rank', 'addRank');
+    Route::put('/update_rank', 'updateRank');
+    Route::delete('/delete_rank', 'deleteRank');
 
 });
+
+// });

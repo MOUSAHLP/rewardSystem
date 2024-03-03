@@ -23,6 +23,9 @@ class AchievementService
     }
 
 
+
+
+
     public static function getUserDoneAchievements($user_id)
     {
         $user_points = Point::where("user_id", $user_id)->get("achievement_id")->toArray();

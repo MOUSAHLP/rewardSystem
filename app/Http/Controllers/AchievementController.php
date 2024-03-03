@@ -62,6 +62,84 @@ class AchievementController extends Controller
         );
     }
 
+    // AA
+
+
+    public function add(AchievementRequest $request)
+    {
+
+        $data = $request->validated();
+        $achievement = new Achievement();
+
+        // Set achievement data
+        $achievement->achievement = $data['achievement'];
+        $achievement->points = $data['points'];
+        $achievement->description = $data['description'];
+        $achievement->segments = $data['segments'];
+
+        $achievement->save();
+
+        // return $achievement;
+        return $this->successResponse(
+            $achievement,
+            'achievementAddedSuccessfully'
+        );
+    }
+
+    public function delete(Request $request)
+    {
+        // Validate the request parameters
+        $request->validate([
+            'id' => 'required|exists:achievements,id',
+        ]);
+
+        // Get the ID of the achievement to delete
+        $achievementId = $request->input('id');
+
+        // Find the achievement by its ID
+        $achievement = Achievement::find($achievementId);
+
+        // Check if the achievement exists
+        if (!$achievement) {
+            return $this->errorResponse('Achievement not found', 404);
+        }
+
+        // Delete the achievement
+        $achievement->delete();
+
+        return $this->successResponse(
+            null,
+            'Achievement deleted successfully'
+        );
+    }
+
+    public function update(AchievementRequest $request)
+    {
+        $data = $request->validated();
+
+        $achievement = Achievement::find($data['id']);
+
+        if (!$achievement) {
+            return response()->json(['message' => 'Achievement not found'], 404);
+        }
+
+        $achievement->update([
+            'achievement' => $data['achievement'],
+            'points' => $data['points'],
+            'description' => $data['description'],
+            'segments' => $data['segments']
+        ]);
+
+        return $this->successResponse(
+            $achievement,
+            'dataUpdatedSuccessfully'
+        );
+    }
+
+
+
+       // AA
+
     public function deleteAchievement(AchievementRequest $request)
     {
         $validatedData = $request->validated();

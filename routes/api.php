@@ -47,6 +47,10 @@ Route::group([
     Route::get('not-done/user/{user_id}', 'getUserNotDoneAchievements');
 
     Route::post('add-achievement', 'addAchievement');
+    // Route::post('add', 'add');
+    Route::post('add', 'add');
+    Route::delete('delete', 'delete');
+    Route::put('update', 'update');
     Route::delete('delete-achievement', 'deleteAchievement');
 });
 

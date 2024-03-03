@@ -9,7 +9,6 @@ use Carbon\Carbon;
 
 class AchievementService
 {
-
     public static function createPoint($validatedData, $points)
     {
         $point = new Point();
@@ -21,7 +20,6 @@ class AchievementService
         $point->expire_at = Carbon::now()->addDays(90)->format("Y-m-d H:i:s");
         $point->save();
     }
-
 
     public static function getUserDoneAchievements($user_id)
     {

@@ -108,16 +108,43 @@ class CouponController extends Controller
         $validatedData = $request->validated();
 
         $coupon = Coupon::where("id", $validatedData["coupon_id"])->with("price")->get()->first();
-        return $coupon;
+
         $user_total_points = $this->pointService->getUserPointsSum($validatedData["user_id"]);
-        if ($user_total_points < $coupon->price->coupon_price) {
-            return $this->errorResponse("NoEnoughPoints", 400);
+        $coupon_price = $coupon->price->coupon_price;
+
+        // check if the coupon price is greater than user's points
+        if ($user_total_points < $coupon_price) {
+            return $this->errorResponse("coupons.NoEnoughPoints", 400);
         }
-        return $this->pointService->getUserValidPoints($validatedData["user_id"]);
+
+        // Remove user's valid points
+        $user_valid_points = $this->pointService->getUserValidPoints($validatedData["user_id"]);
+
+        foreach($user_valid_points as $point){
+            if($coupon_price <= 0)break;
+
+            if($coupon_price >= ($point->points - $point->used_points)){
+                $point->used_at = Carbon::now();
+                $coupon_price = $coupon_price - ($point->points - $point->used_points);
+                $point->used_points = $point->points;
+            }else{
+                $point->used_points = $coupon_price;
+                $coupon_price = 0;
+            }
+            $point->save();
+        }
+
+        // Add the coupon to the user
+        $coupon = CouponUser::create([
+            "user_id"  => $validatedData["user_id"],
+            "coupon_id"=> $validatedData["coupon_id"],
+            "used_at"  => null,
+            "expire_at"=> Carbon::now()->addDays(90)
+        ]);
 
         return $this->successResponse(
-            [],
-            'dataDeletedSuccessfully'
+            $coupon,
+            'dataAddedSuccessfully'
         );
     }
 

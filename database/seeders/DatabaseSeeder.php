@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\CouponPrice::factory(10)->create();
         \App\Models\CouponUser::factory(30)->create();
         \App\Models\Point::factory(30)->create();
-        \App\Models\PointInSyrianPound::factory(1)->create();
+        \App\Models\PointInPound::factory(1)->create();
         \App\Models\Rank::factory(6)->create();
 
         // \App\Models\User::factory()->create([

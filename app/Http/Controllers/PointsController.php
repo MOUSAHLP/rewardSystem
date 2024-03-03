@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PointRequest;
-use App\Models\PointInSyrianPound;
+use App\Models\PointInPound;
 use Illuminate\Http\Request;
 use App\Services\PointService;
 use App\Services\RankService;
@@ -115,7 +115,7 @@ class PointsController extends Controller
 
     public function getPointsValue()
     {
-        $points_value = PointInSyrianPound::point_value();
+        $points_value = PointInPound::point_value();
         return $this->successResponse(
             $points_value,
             'dataFetchedSuccessfully'
@@ -125,7 +125,7 @@ class PointsController extends Controller
     public function setPointsValue(PointRequest $request)
     {
         $validatedData = $request->validated();
-        $points_value = PointInSyrianPound::first()->update(["value"=>$request["value"]]);
+        $points_value = PointInPound::first()->update(["value"=>$request["value"]]);
         return $this->successResponse(
             $points_value,
             'dataUpdatedSuccessfully'

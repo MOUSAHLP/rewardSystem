@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('point_in_syrian_pound', function (Blueprint $table) {
+        Schema::create('point_in_pound', function (Blueprint $table) {
              $table->bigIncrements("id");
             $table->double('value');
         });

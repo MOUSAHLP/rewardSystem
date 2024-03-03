@@ -29,9 +29,8 @@ class Coupon extends Model
         return $this->belongsTo(CouponType::class);
     }
 
-    public function price()
-    {
-        return $this->belongsTo(CouponPrice::class);
+    public function price(){
+        return $this->hasOne(CouponPrice::class);
     }
 
     public static function generateCode(){

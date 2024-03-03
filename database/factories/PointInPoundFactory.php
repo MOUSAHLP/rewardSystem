@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PointInSyrianPound>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\PointInPound>
  */
-class PointInSyrianPoundFactory extends Factory
+class PointInPoundFactory extends Factory
 {
     /**
      * Define the model's default state.

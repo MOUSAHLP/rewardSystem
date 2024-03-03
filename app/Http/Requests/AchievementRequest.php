@@ -29,6 +29,9 @@ class AchievementRequest extends FormRequest
         return match ($this->route()->getActionMethod()) {
             'addAchievement'   =>  $this->getaddAchievementRules(),
             'deleteAchievement'   =>  $this->getdeleteAchievementRules(),
+            'add'   =>  $this->getAddRules(),
+            'delete'   =>  $this->getdeleteRules(),
+            'update'   =>  $this->getupdateRules(),
         };
 
     }
@@ -44,6 +47,31 @@ class AchievementRequest extends FormRequest
         return [
             'achievement_id' => 'required|exists:achievements,id',
             'user_id' => 'required|exists:users,id'
+        ];
+    }
+
+    public function getAddRules(){
+        return [
+            "achievement" => "required",
+            "points" => "required",
+            "description" => "required",
+            "segments" => "required"
+
+        ];
+    }
+    public function getdeleteRules(){
+        return [
+            'id' => 'required|exists:achievements,id',
+        ];
+    }
+    public function getupdateRules(){
+        return [
+            "id" => "required",
+            "achievement" => "required",
+            "points" => "required",
+            "description" => "required",
+            "segments" => "required"
+
         ];
     }
 

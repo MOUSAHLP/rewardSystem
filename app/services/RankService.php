@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\PointInPound;
 use App\Models\Rank;
 use App\Models\User;
 

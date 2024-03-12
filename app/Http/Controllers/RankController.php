@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RankRequest;
 use App\Models\Rank;
-use App\Models\User;
 use App\Services\PointService;
 use App\Services\RankService;
 use Illuminate\Http\Request;
@@ -119,7 +118,7 @@ class RankController extends Controller
 
         $validatedData = $request->validated();
 
-        Rank::where("id", $validatedData["id"])->delete($validatedData);
+        Rank::where("id", $validatedData["id"])->delete();
 
         return $this->successResponse(
             [],

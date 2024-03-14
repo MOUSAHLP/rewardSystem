@@ -8,17 +8,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-// ============== get token ============== //
-Route::get('/get-token', function(Request $request){
-    if(Auth::attempt(["name"=>$request->name,"password"=>$request->password])){
-        $user = Auth::user();
-        return $user->createToken("MyApp")->accessToken;
-    }
-});
+// // ============== get token ============== //
+// Route::get('/get-token', function(Request $request){
+//     if(Auth::attempt(["name"=>$request->name,"password"=>$request->password])){
+//         $user = Auth::user();
+//         return $user->createToken("MyApp")->accessToken;
+//     }
+// });
 
-// Route::group([
-//     "middleware"=>["auth:api","lang"]
-// ], function () {
+Route::group([
+    "middleware"=>["check","lang"]
+], function () {
 
 // ============== points ============== //
 Route::group([
@@ -109,4 +109,4 @@ Route::group([
 
 });
 
-// });
+});

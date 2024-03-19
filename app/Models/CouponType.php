@@ -25,6 +25,9 @@ class CouponType extends Model
 
     public function getImageAttribute($value)
     {
-        return env('APP_URL') . '/storage/images/couponsType/'.$value;
+        return env('APP_URL') . '/storage/images/couponsType/' . $value;
     }
+    protected $casts = [
+        "is_percentage" => "boolean"
+    ];
 }

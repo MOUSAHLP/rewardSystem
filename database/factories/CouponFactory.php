@@ -21,7 +21,6 @@ class CouponFactory extends Factory
         return [
             'coupon_type_id' => CouponType::all()->random()->id,
             'value'=> $this->faker->numberBetween(0, 1000),
-            'coupon_code'=> $this->faker->slug,
             'description'=> $this->faker->sentence,
             'created_at'=>$create_date,
         ];

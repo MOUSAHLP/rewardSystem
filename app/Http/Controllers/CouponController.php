@@ -68,6 +68,25 @@ class CouponController extends Controller
             'dataFetchedSuccessfully'
         );
     }
+    public function getFixedValueCoupons()
+    {
+        $user_coupons = $this->couponService->get_FixedValue_percentage_Coupons(false);
+
+        return $this->successResponse(
+            $user_coupons,
+            'dataFetchedSuccessfully'
+        );
+    }
+
+    public function getPercentageCoupons()
+    {
+        $user_coupons = $this->couponService->get_FixedValue_percentage_Coupons(false);
+
+        return $this->successResponse(
+            $user_coupons,
+            'dataFetchedSuccessfully'
+        );
+    }
 
 
     public function addCoupon(CouponRequest $request)
@@ -110,8 +129,13 @@ class CouponController extends Controller
         $coupon = Coupon::where("id", $validatedData["coupon_id"])->with("price")->get()->first();
 
         $user_total_points = $this->pointService->getUserPointsSum($validatedData["user_id"]);
-        $coupon_price = $coupon->price->coupon_price;
 
+        // check if the coupon has a price
+        if (!isset($coupon->price)) {
+            return $this->errorResponse("coupons.HasNOPrice", 400);
+        }
+
+        $coupon_price = $coupon->price->coupon_price;
         // check if the coupon price is greater than user's points
         if ($user_total_points < $coupon_price) {
             return $this->errorResponse("coupons.NoEnoughPoints", 400);
@@ -120,14 +144,14 @@ class CouponController extends Controller
         // Remove user's valid points
         $user_valid_points = $this->pointService->getUserValidPoints($validatedData["user_id"]);
 
-        foreach($user_valid_points as $point){
-            if($coupon_price <= 0)break;
+        foreach ($user_valid_points as $point) {
+            if ($coupon_price <= 0) break;
 
-            if($coupon_price >= ($point->points - $point->used_points)){
+            if ($coupon_price >= ($point->points - $point->used_points)) {
                 $point->used_at = Carbon::now();
                 $coupon_price = $coupon_price - ($point->points - $point->used_points);
                 $point->used_points = $point->points;
-            }else{
+            } else {
                 $point->used_points = $coupon_price;
                 $coupon_price = 0;
             }
@@ -137,14 +161,57 @@ class CouponController extends Controller
         // Add the coupon to the user
         $coupon = CouponUser::create([
             "user_id"  => $validatedData["user_id"],
-            "coupon_id"=> $validatedData["coupon_id"],
+            "coupon_id" => $validatedData["coupon_id"],
+            "coupon_code" => CouponUser::generateCode(),
             "used_at"  => null,
-            "expire_at"=> Carbon::now()->addDays(90)
+            "expire_at" => Carbon::now()->addDays(90)
         ]);
 
         return $this->successResponse(
             $coupon,
             'dataAddedSuccessfully'
+        );
+    }
+
+    public function useCoupon(CouponRequest $request)
+    {
+        $validatedData = $request->validated();
+        $coupon_user = CouponUser::where("coupon_code", $validatedData["coupon_code"])
+            ->where("user_id", $validatedData["user_id"])
+            ->with(["coupon", "coupon.couponType"])
+            ->get()
+            ->first();
+
+        // check if user has this coupon
+        if (!isset($coupon_user)) {
+            return $this->errorResponse("coupons.YouDontHaveThisCoupon", 400);
+        }
+        // check if the coupon is used
+        if ($coupon_user->used_at != null) {
+            return $this->errorResponse("coupons.CouponUsed", 400);
+        }
+        // check if the coupon is expired
+        if ($coupon_user->expire_at < Carbon::now()) {
+            return $this->errorResponse("coupons.CouponExpired", 400);
+        }
+
+        // get coupon value and is_percentage
+        $coupon_value = $coupon_user->coupon->value;
+        $is_percentage = $coupon_user->coupon->couponType->is_percentage;
+
+        // make the coupon used
+        $coupon_user->update([
+            "used_at" => Carbon::now()
+        ]);
+
+        // prepare data
+        $data = [
+            "coupon_value"  => $coupon_value,
+            "is_percentage" => $is_percentage,
+        ];
+        return $this->successResponse(
+            $data,
+            'dataUpdatedSuccessfully'
         );
     }
 

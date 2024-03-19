@@ -23,6 +23,7 @@ class CouponRequest extends FormRequest
             'updateCoupon'   =>  $this->getupdateCouponRules(),
             'deleteCoupon'   =>  $this->getdeleteCouponRules(),
             'buyCoupon'   =>  $this->getbuyCouponRules(),
+            'useCoupon'   =>  $this->getuseCouponRules(),
         };
     }
 
@@ -40,10 +41,7 @@ class CouponRequest extends FormRequest
             "id"=>"required|exists:coupons,id",
             "coupon_type_id"=>"required|exists:coupons_types,id",
             "value"=> "required|integer",
-            "coupon_code"=> [
-                'required',
-                'unique:coupons,coupon_code,'. $this->id
-            ],
+
             "description" => "required|max:1000",
         ];
     }
@@ -62,6 +60,14 @@ class CouponRequest extends FormRequest
             "coupon_id" => "required|integer|exists:coupons,id"
         ];
     }
+    public function getuseCouponRules()
+    {
+        return [
+            "user_id" => "required|integer|exists:users,id",
+            "coupon_code" => "required|exists:coupons_users,coupon_code"
+        ];
+    }
+
 
     protected function failedValidation(Validator $validator)
     {

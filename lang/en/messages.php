@@ -36,7 +36,12 @@ return [
 
     //coupons
     "coupons" => [
+        "HasNOPrice"=> "This Coupon Has NO Price",
         "NoEnoughPoints"=> "No Enough Points",
+        "YouDontHaveThisCoupon"=> "You Dont Have This Coupon",
+        "CouponExpired"=> "Coupon Is Expired",
+        "CouponUsed"=> "Coupon Has Already Been Used",
+
     ],
     // Achievements
     "achievementAlreadyDone" => "Achievement Already Done",

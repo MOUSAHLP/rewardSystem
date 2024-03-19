@@ -24,6 +24,7 @@ class CouponUserFactory extends Factory
         return [
             'user_id'=> User::all()->random()->id,
             'coupon_id'=> Coupon::all()->random()->id,
+            'coupon_code'=> $this->faker->uuid,
             'used_at'=> $used_date,
             'expire_at'=> $expire_date,
         ];

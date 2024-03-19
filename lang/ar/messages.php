@@ -36,7 +36,12 @@ return [
 
     //coupons
       "coupons" => [
+        "HasNOPrice"=> "هذه القسيمة ليس لديها سعر",
         "NoEnoughPoints"=> "النقاط غير كافية",
+        "YouDontHaveThisCoupon"=> "ليس لديك هذه القسيمة",
+        "CouponExpired"=> "القسيمة منتهية الصلاحية",
+        "CouponUsed"=> "القسيمة مستخدمة بالفعل",
+
     ],
 
     // Achievements

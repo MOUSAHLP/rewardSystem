@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 class Coupon extends Model
 {
     use HasFactory;
@@ -14,7 +13,6 @@ class Coupon extends Model
     protected $fillable = [
         'coupon_type_id',
         'value',
-        'coupon_code',
         'description',
         'created_at',
     ];
@@ -33,12 +31,4 @@ class Coupon extends Model
         return $this->hasOne(CouponPrice::class);
     }
 
-    public static function generateCode(){
-        $code = str::random(8);
-        $exists = Coupon::where('coupon_code', $code)->count();
-        if($exists > 0){
-            Coupon::generateCode();
-        }
-        return $code;
-    }
 }

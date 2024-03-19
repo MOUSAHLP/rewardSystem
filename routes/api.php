@@ -20,7 +20,7 @@ Route::group([
     "middleware"=>["check","lang"]
 ], function () {
 
-// ============== points ============== //
+// ============== Points ============== //
 Route::group([
     'controller' => PointsController::class,
     'prefix' => "points",
@@ -64,11 +64,15 @@ Route::group([
     Route::get('used/user/{user_id}', 'getUserUsedCoupons');
     Route::get('expired/user/{user_id}', 'getUserExpiredCoupons');
 
+    Route::get('fixed_value', 'getFixedValueCoupons');
+    Route::get('percentage', 'getPercentageCoupons');
+
     Route::post('/add', 'addCoupon');
     Route::put('/update', 'updateCoupon');
     Route::delete('/delete', 'deleteCoupon');
 
     Route::post('/buy', 'buyCoupon');
+    Route::post('/use', 'useCoupon');
 
     // Coupons Prices
     Route::get('/prices', 'getCouponsPrices');

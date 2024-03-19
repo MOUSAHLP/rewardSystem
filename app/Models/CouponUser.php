@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class CouponUser extends Model
 {
@@ -13,6 +14,7 @@ class CouponUser extends Model
     protected $fillable = [
         'user_id',
         'coupon_id',
+        'coupon_code',
         'used_at',
         'expire_at'
     ];
@@ -26,4 +28,12 @@ class CouponUser extends Model
         return $this->belongsTo(Coupon::class,"coupon_id","id");
     }
 
+    public static function generateCode(){
+        $code = str::random(8);
+        $exists = CouponUser::where('coupon_code', $code)->count();
+        if($exists > 0){
+            CouponUser::generateCode();
+        }
+        return $code;
+    }
 }

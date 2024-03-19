@@ -16,10 +16,16 @@ class PointService
     public function getUserPointsSum($user_id)
     {
         return intval(Point::where("user_id", $user_id)
+        ->sum("points"));
+    }
+    public function getUserValidPointsSum($user_id)
+    {
+        return intval(Point::where("user_id", $user_id)
         ->where("used_at", null)
         ->whereDate('expire_at', '>', Carbon::now())
         ->selectRaw('SUM(points - used_points) as total_points')->first()->total_points);
     }
+
     public function getPointsValue($user_points)
     {
         return  $user_points * PointInPound::point_value();

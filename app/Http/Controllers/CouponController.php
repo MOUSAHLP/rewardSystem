@@ -128,7 +128,7 @@ class CouponController extends Controller
 
         $coupon = Coupon::where("id", $validatedData["coupon_id"])->with("price")->get()->first();
 
-        $user_total_points = $this->pointService->getUserPointsSum($validatedData["user_id"]);
+        $user_total_points = $this->pointService->getUserValidPointsSum($validatedData["user_id"]);
 
         // check if the coupon has a price
         if (!isset($coupon->price)) {

@@ -29,7 +29,7 @@ class CouponTypeRequest extends FormRequest
     public function getaddcouponsTypeRules(){
         return [
             'name' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,jpg,png',
+            'image' => 'required|image|mimes:jpeg,jpg,png,svg',
             'type' => 'required|integer|min:1|max:3',
         ];
     }

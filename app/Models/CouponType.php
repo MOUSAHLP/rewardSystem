@@ -22,8 +22,4 @@ class CouponType extends Model
         return $this->hasMany(Coupon::class);
     }
 
-    public function getImageAttribute($value)
-    {
-        return env('APP_URL') . '/storage/images/couponsType/' . $value;
-    }
 }

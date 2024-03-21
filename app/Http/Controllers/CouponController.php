@@ -314,11 +314,8 @@ class CouponController extends Controller
 
     public function addcouponsType(CouponTypeRequest $request)
     {
-        $fileNameWithExt = $request->file('image')->getClientOriginalName();
-        $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-        $extention = $request->file('image')->getClientOriginalExtension();
-        $fileNameToStore = $filename . '_' . time() . '.' . $extention;
-        $request->file('image')->storeAs('public/images/couponsType', $fileNameToStore);
+        $fileNameToStore = $request->file('image')->hashName();
+        $request->file('image')->storeAs('public/images/couponsType',$fileNameToStore);
 
         $couponstype = CouponType::create([
             'name' => $request->name,

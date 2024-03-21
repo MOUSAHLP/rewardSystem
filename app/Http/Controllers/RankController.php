@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\RankRequest;
+use App\Http\Resources\RankResource;
 use App\Models\Rank;
 use App\Services\PointService;
 use App\Services\RankService;
@@ -15,7 +16,7 @@ class RankController extends Controller
     }
     public function getRanks()
     {
-        $ranks = Rank::orderBy("limit", "ASC")->get();
+        $ranks = RankResource::collection(Rank::orderBy("limit", "ASC")->get()) ;
 
         return $this->successResponse(
             $ranks,
@@ -25,7 +26,7 @@ class RankController extends Controller
 
     public function getRank(Request $request)
     {
-        $rank = Rank::where("id", $request->rank_id)->get()->first();
+        $rank =new RankResource(Rank::where("id", $request->rank_id)->get()->first());
         if (isset($rank) == 0) {
             return $this->errorResponse("Ranks.NotFound", 400);
         }
@@ -39,12 +40,12 @@ class RankController extends Controller
 
     public function getRankUsers(Request $request){
 
-        $rank = Rank::where("id", $request->rank_id)->get()->first();
+        $rank = new RankResource(Rank::where("id", $request->rank_id)->get()->first());
         if (isset($rank) == 0) {
             return $this->errorResponse("Ranks.NotFound", 400);
         }
 
-        $rank_users = $this->rankService->getRankUsers($rank->limit);
+        $rank_users =$this->rankService->getRankUsers($rank->limit);
 
         $data = [
             "users"=> $rank_users,
@@ -64,7 +65,7 @@ class RankController extends Controller
         }
 
         $user_points = $this->pointService->getUserPointsSum($request->user_id);
-        $user_rank = $this->rankService->getUserCurrentRank($user_points);
+        $user_rank =new RankResource( $this->rankService->getUserCurrentRank($user_points));
 
         return $this->successResponse(
             $user_rank,
@@ -80,7 +81,7 @@ class RankController extends Controller
         }
 
         $user_points = $this->pointService->getUserPointsSum($request->user_id);
-        $user_next_rank = $this->rankService->getUserNextRank($user_points);
+        $user_next_rank =new RankResource( $this->rankService->getUserNextRank($user_points));
 
         return $this->successResponse(
             $user_next_rank,

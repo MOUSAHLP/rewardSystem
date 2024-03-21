@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Rank extends Model
 {
     use HasFactory;
-
     protected $table = 'user_ranks';
     public $timestamps = false;
     protected $fillable = [
@@ -22,4 +21,5 @@ class Rank extends Model
     protected $casts = [
         'features' => 'array'
     ];
+
 }

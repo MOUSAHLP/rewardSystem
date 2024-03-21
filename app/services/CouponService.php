@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\CouponResource;
 use App\Models\Coupon;
 use App\Models\CouponType;
 use App\Models\CouponUser;
@@ -15,26 +16,29 @@ class CouponService
     {
         if ($is_used) {
             return CouponUser::where("user_id", $user_id)
-                ->where("used_at", null)
-                ->with(["coupon", "coupon.couponType", "coupon.price"])->get()->map(function ($model) {
-                    $model->coupon->expire_at = $model->expire_at;
-                    if ($model->coupon->price != null) {
-                        $price = $model->coupon->price->coupon_price;
-                        $model->coupon->unsetRelation('price');
-                        $model->coupon->price = $price;
-                    }
+                ->where("used_at", "!=", null)
+                ->with(["coupon", "coupon.couponType", "coupon.price"])->get()
+                ->filter(function ($model) {
+                    return $model->coupon->price != null;
+                })->values()
+                ->map(function ($model) {
+                    $model->coupon->setAttribute("coupon_code", $model->coupon_code);
+                    $model->coupon->setAttribute("expire_at", $model->expire_at);
+                    $model->coupon = new CouponResource($model->coupon);
                     return $model->coupon;
                 });
         } else {
             return CouponUser::where("user_id", $user_id)
-                ->where("used_at", "!=", null)
-                ->with(["coupon", "coupon.couponType", "coupon.price"])->get()->map(function ($model) {
-                    $model->coupon->expire_at = $model->expire_at;
-                    if ($model->coupon->price != null) {
-                        $price = $model->coupon->price->coupon_price;
-                        $model->coupon->unsetRelation('price');
-                        $model->coupon->price = $price;
-                    }
+                ->where("used_at", null)
+                ->with(["coupon", "coupon.couponType", "coupon.price"])->get()
+                ->filter(function ($model) {
+                    return $model->coupon->price != null;
+                })->values()
+                ->map(function ($model) {
+                    $model->coupon->setAttribute("coupon_code", $model->coupon_code);
+                    $model->coupon->setAttribute("used_at", $model->used_at);
+                    $model->coupon->setAttribute("expire_at", $model->expire_at);
+                    $model->coupon = new CouponResource($model->coupon);
                     return $model->coupon;
                 });
         }
@@ -48,26 +52,17 @@ class CouponService
             ->whereDate('expire_at', '<', Carbon::now())
             ->get()->pluck('coupon');
     }
-    public static function get_FixedValue_percentage_Coupons($is_percentage)
+    public static function get_Coupons_By_Type($coupon_type)
     {
         return Coupon::with(["price", "couponType"])
             ->get()
-            ->map(function ($model) {
-                if ($model->price != null) {
-                    $price = $model->price->coupon_price;
-                    $model->unsetRelation('price');
-                    $model->price = $price;
+            ->filter(function ($model) use ($coupon_type) {
+                if ($model->couponType != null && $coupon_type == $model->couponType->type && $model->price != null) {
+                    return true;
                 }
-                return $model;
-            })
-            ->filter(function ($model) use($is_percentage){
-                if($is_percentage){
-                    return $model->couponType->is_percentage;
-                }
-                return !$model->couponType->is_percentage;
-            });
+                return false;
+            })->values();
     }
-
     public static function createCoupon($data)
     {
         $coupon = new Coupon();

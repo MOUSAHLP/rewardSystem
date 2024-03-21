@@ -30,7 +30,7 @@ class CouponTypeRequest extends FormRequest
         return [
             'name' => 'required|string',
             'image' => 'required|image|mimes:jpeg,jpg,png',
-            'is_percentage' => 'required|boolean',
+            'type' => 'required|integer|min:1|max:3',
         ];
     }
 
@@ -39,7 +39,7 @@ class CouponTypeRequest extends FormRequest
             'id' =>  'required|integer|exists:coupons_types,id',
             'name' => 'required|string',
             'image' => 'required|image|mimes:jpeg,jpg,png',
-            'is_percentage' => 'required|boolean',
+            'type' => 'required|integer|min:1|max:3',
         ];
     }
 

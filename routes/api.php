@@ -3,6 +3,7 @@
 use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\PointsController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RankController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -66,6 +67,7 @@ Route::group([
 
     Route::get('fixed_value', 'getFixedValueCoupons');
     Route::get('percentage', 'getPercentageCoupons');
+    Route::get('delivery', 'getDeliveryCoupons');
 
     Route::post('/add', 'addCoupon');
     Route::put('/update', 'updateCoupon');
@@ -91,9 +93,16 @@ Route::group([
         Route::post('/add-couponsType', 'addcouponsType');
         Route::post('/update-couponsType', 'updatecouponsType');
         Route::delete('/delete-couponsType', 'deletecouponsType');
-
     });
+});
 
+// ============== Purchases ============== //
+Route::group([
+    'controller' => PurchaseController::class,
+    'prefix' => "purchases",
+], function () {
+    Route::get('/', 'getPurchases');
+    Route::get('/user/{user_id}', 'getUserPurchases');
 });
 
 // ============== ranks ============== //

@@ -15,9 +15,8 @@ class CouponType extends Model
     protected $fillable = [
         'name',
         'image',
-        "is_percentage"
+        "type"
     ];
-
     public function coupons()
     {
         return $this->hasMany(Coupon::class);
@@ -27,7 +26,4 @@ class CouponType extends Model
     {
         return env('APP_URL') . '/storage/images/couponsType/' . $value;
     }
-    protected $casts = [
-        "is_percentage" => "boolean"
-    ];
 }

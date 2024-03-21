@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PointRequest;
+use App\Http\Resources\PointResource;
+use App\Http\Resources\RankResource;
 use App\Models\PointInPound;
 use Illuminate\Http\Request;
 use App\Services\PointService;
@@ -20,9 +22,9 @@ class PointsController extends Controller
             return $this->errorResponse("users.NotFound", 400);
         }
 
-        $user_valid_points = $this->pointService->getUserValidPoints($request->user_id);
-        $user_expired_points = $this->pointService->getUserExpiredPoints($request->user_id);
-        $user_used_points = $this->pointService->getUserUsedPoints($request->user_id);
+        $user_valid_points = PointResource::collection($this->pointService->getUserValidPoints($request->user_id));
+        $user_expired_points =  PointResource::collection($this->pointService->getUserExpiredPoints($request->user_id));
+        $user_used_points =  PointResource::collection($this->pointService->getUserUsedPoints($request->user_id));
 
         $data = [
             "valid_points" => $user_valid_points,
@@ -43,8 +45,8 @@ class PointsController extends Controller
 
             $user_points = $this->pointService->getUserPointsSum($request->user_id);
             $points_value = $this->pointService->getPointsValue($user_points);
-            $user_rank = $this->rankService->getUserCurrentRank($user_points);
-            $user_next_rank = $this->rankService->getUserNextRank($user_points);
+            $user_rank =new RankResource( $this->rankService->getUserCurrentRank($user_points));
+            $user_next_rank = new RankResource($this->rankService->getUserNextRank($user_points));
 
             $data = [
                 "user_points" => $user_points,
@@ -77,7 +79,7 @@ class PointsController extends Controller
             return $this->errorResponse("users.NotFound", 400);
         }
 
-        $user_valid_points = $this->pointService->getUserValidPoints($request->user_id);
+        $user_valid_points = PointResource::collection($this->pointService->getUserValidPoints($request->user_id));
 
         return $this->successResponse(
             $user_valid_points,
@@ -91,7 +93,7 @@ class PointsController extends Controller
             return $this->errorResponse("users.NotFound", 400);
         }
 
-        $user_expired_points = $this->pointService->getUserExpiredPoints($request->user_id);
+        $user_expired_points =  PointResource::collection($this->pointService->getUserExpiredPoints($request->user_id));
 
         return $this->successResponse(
             $user_expired_points,
@@ -105,7 +107,7 @@ class PointsController extends Controller
             return $this->errorResponse("users.NotFound", 400);
         }
 
-        $user_used_points = $this->pointService->getUserUsedPoints($request->user_id);
+        $user_used_points =  PointResource::collection($this->pointService->getUserUsedPoints($request->user_id));
 
         return $this->successResponse(
             $user_used_points,

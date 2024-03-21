@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CouponTypes;
 use App\Http\Requests\CouponRequest;
 use App\Http\Requests\CouponsPriceRequest;
 use App\Http\Requests\CouponTypeRequest;
+use App\Http\Resources\CouponResource;
+use App\Http\Resources\CouponTypeResource;
 use App\Models\Coupon;
 use App\Models\CouponPrice;
 use App\Models\CouponType;
 use App\Models\CouponUser;
+use App\Models\Purchase;
 use App\Services\CouponService;
 use App\Services\PointService;
 use Carbon\Carbon;
@@ -22,7 +26,7 @@ class CouponController extends Controller
 
     public function getAllCoupons()
     {
-        $coupons = Coupon::with("couponType")->get();
+        $coupons = CouponResource::collection(Coupon::all());
         return $this->successResponse(
             $coupons,
             'dataFetchedSuccessfully'
@@ -35,7 +39,7 @@ class CouponController extends Controller
             return $this->errorResponse("users.NotFound", 400);
         }
 
-        $user_coupons = $this->couponService->getUserCoupons($request->user_id, true);
+        $user_coupons = $this->couponService->getUserCoupons($request->user_id, false);
         return $this->successResponse(
             $user_coupons,
             'dataFetchedSuccessfully'
@@ -48,7 +52,7 @@ class CouponController extends Controller
             return $this->errorResponse("users.NotFound", 400);
         }
 
-        $user_coupons = $this->couponService->getUserCoupons($request->user_id, false);
+        $user_coupons = $this->couponService->getUserCoupons($request->user_id, true);
         return $this->successResponse(
             $user_coupons,
             'dataFetchedSuccessfully'
@@ -61,7 +65,7 @@ class CouponController extends Controller
             return $this->errorResponse("users.NotFound", 400);
         }
 
-        $user_coupons = $this->couponService->getUserExpiredCoupons($request->user_id);
+        $user_coupons = CouponResource::collection($this->couponService->getUserExpiredCoupons($request->user_id));
 
         return $this->successResponse(
             $user_coupons,
@@ -70,7 +74,7 @@ class CouponController extends Controller
     }
     public function getFixedValueCoupons()
     {
-        $user_coupons = $this->couponService->get_FixedValue_percentage_Coupons(false);
+        $user_coupons = CouponResource::collection($this->couponService->get_Coupons_By_Type(CouponTypes::FIXED_VALUE));
 
         return $this->successResponse(
             $user_coupons,
@@ -80,14 +84,22 @@ class CouponController extends Controller
 
     public function getPercentageCoupons()
     {
-        $user_coupons = $this->couponService->get_FixedValue_percentage_Coupons(false);
+        $user_coupons = CouponResource::collection($this->couponService->get_Coupons_By_Type(CouponTypes::PERCENTAGE));
 
         return $this->successResponse(
             $user_coupons,
             'dataFetchedSuccessfully'
         );
     }
+    public function getDeliveryCoupons()
+    {
+        $user_coupons = CouponResource::collection($this->couponService->get_Coupons_By_Type(CouponTypes::FREE_DELIVERY));
 
+        return $this->successResponse(
+            $user_coupons,
+            'dataFetchedSuccessfully'
+        );
+    }
 
     public function addCoupon(CouponRequest $request)
     {
@@ -145,18 +157,25 @@ class CouponController extends Controller
         $user_valid_points = $this->pointService->getUserValidPoints($validatedData["user_id"]);
 
         foreach ($user_valid_points as $point) {
-            if ($coupon_price <= 0) break;
-
             if ($coupon_price >= ($point->points - $point->used_points)) {
                 $point->used_at = Carbon::now();
                 $coupon_price = $coupon_price - ($point->points - $point->used_points);
                 $point->used_points = $point->points;
+                $point->save();
+
             } else {
-                $point->used_points = $coupon_price;
+                $point->used_points += $coupon_price;
                 $coupon_price = 0;
+                $point->save();
+                break;
             }
-            $point->save();
         }
+        //add the purchase to the user
+        Purchase::create([
+            "user_id"  => $validatedData["user_id"],
+            "coupon_id" => $validatedData["coupon_id"],
+            "points" =>  $coupon->price->coupon_price
+        ]);
 
         // Add the coupon to the user
         $coupon = CouponUser::create([
@@ -195,9 +214,9 @@ class CouponController extends Controller
             return $this->errorResponse("coupons.CouponExpired", 400);
         }
 
-        // get coupon value and is_percentage
+        // get coupon value and coupon type
         $coupon_value = $coupon_user->coupon->value;
-        $is_percentage = $coupon_user->coupon->couponType->is_percentage;
+        $CouponType = CouponTypes::getName($coupon_user->coupon->couponType->type);
 
         // make the coupon used
         $coupon_user->update([
@@ -207,7 +226,7 @@ class CouponController extends Controller
         // prepare data
         $data = [
             "coupon_value"  => $coupon_value,
-            "is_percentage" => $is_percentage,
+            "CouponType" => $CouponType,
         ];
         return $this->successResponse(
             $data,
@@ -261,7 +280,7 @@ class CouponController extends Controller
     // ============== Coupons Types ============== //
     public function getCouponsTypes()
     {
-        $coupon_types = CouponType::all();
+        $coupon_types = CouponTypeResource::collection(CouponType::all());
         return $this->successResponse(
             $coupon_types,
             'dataFetchedSuccessfully'
@@ -273,7 +292,7 @@ class CouponController extends Controller
             return $this->errorResponse("dataNotFound", 400);
         }
 
-        $coupon_type = CouponType::find($request->type_id);
+        $coupon_type = new CouponTypeResource(CouponType::find($request->type_id));
         return $this->successResponse(
             $coupon_type,
             'dataFetchedSuccessfully'
@@ -286,7 +305,7 @@ class CouponController extends Controller
             return $this->errorResponse("dataNotFound", 400);
         }
 
-        $coupons = Coupon::where("coupon_type_id", $request->type_id)->get();
+        $coupons = CouponResource::collection(Coupon::where("coupon_type_id", $request->type_id)->get());
         return $this->successResponse(
             $coupons,
             'dataFetchedSuccessfully'
@@ -304,11 +323,11 @@ class CouponController extends Controller
         $couponstype = CouponType::create([
             'name' => $request->name,
             'image' =>  $fileNameToStore,
-            'is_percentage' => $request->is_percentage,
+            'type' => $request->type,
         ]);
 
         return $this->successResponse(
-            $couponstype,
+            new CouponTypeResource  ($couponstype),
             'dataAddedSuccessfully'
         );
     }

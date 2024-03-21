@@ -11,8 +11,8 @@ class CouponResource extends JsonResource
     {
         return [
             'id'    => $this->id,
-            'value' => $this->value,
-            'price' => $this->price!=null ?$this->price->coupon_price:null,
+            'value' => (int)$this->value,
+            'price' => (int)$this->price!=null ?$this->price->coupon_price:null,
             'coupon_type'  => new CouponTypeResource(CouponType::find($this->coupon_type_id)),
             $this->mergeWhen(
                 $this->coupon_code != null,

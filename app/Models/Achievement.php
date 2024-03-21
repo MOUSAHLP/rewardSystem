@@ -25,4 +25,7 @@ class Achievement extends Model
     {
         return $this->hasMany(AchievementUser::class);
     }
+    protected $casts = [
+        'segments'=>"integer"
+    ];
 }

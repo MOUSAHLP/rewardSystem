@@ -12,9 +12,9 @@ class PointResource extends JsonResource
         return [
             'id'              => $this->id,
             'user_id'         => $this->user_id,
-            'points'          => $this->points,
-            'used_points'     => $this->used_points,
-            'achievement_id'  => $this->achievement_id,
+            'points'          => (int)$this->points,
+            'used_points'     => (int)$this->used_points,
+            'achievement_id'  => (int)$this->achievement_id,
             'created_at'      => $this->created_at,
             'used_at'         => $this->used_at,
             'expire_at'       => $this->expire_at,

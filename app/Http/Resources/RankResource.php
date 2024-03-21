@@ -14,7 +14,7 @@ class RankResource extends JsonResource
         return [
             'id'          => $this->id,
             'name'        => $this->name,
-            'limit'       => $this->limit,
+            'limit'       => (int)$this->limit,
             'features'    => $this->featuresDescription($this->features),
             'description' => $this->description,
             'color'       => $this->color,

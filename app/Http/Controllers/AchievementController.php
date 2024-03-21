@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AchievementRequest;
+use App\Http\Resources\AchievementResource;
 use App\Models\Achievement;
 use App\Models\AchievementUser;
 use App\Models\Point;
@@ -16,7 +17,7 @@ class AchievementController extends Controller
     }
     public function getAllAchievements()
     {
-        $achievements = Achievement::all();
+        $achievements =AchievementResource::collection(Achievement::all());
 
         return $this->successResponse(
             $achievements,
@@ -164,7 +165,7 @@ class AchievementController extends Controller
             return $this->errorResponse("users.NotFound", 400);
         }
 
-        $user_achievements = $this->achievementService->getUserDoneAchievements($request->user_id);
+        $user_achievements = AchievementResource::collection($this->achievementService->getUserDoneAchievements($request->user_id));
 
         return $this->successResponse(
             $user_achievements,
@@ -178,7 +179,7 @@ class AchievementController extends Controller
             return $this->errorResponse("users.NotFound", 400);
         }
 
-        $user_achievements = $this->achievementService->getUserNotDoneAchievements($request->user_id);
+        $user_achievements = AchievementResource::collection($this->achievementService->getUserNotDoneAchievements($request->user_id));
 
         return $this->successResponse(
             $user_achievements,

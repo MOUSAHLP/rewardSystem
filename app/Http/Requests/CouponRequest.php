@@ -22,7 +22,9 @@ class CouponRequest extends FormRequest
             'addCoupon'   =>  $this->getaddCouponRules(),
             'updateCoupon'   =>  $this->getupdateCouponRules(),
             'deleteCoupon'   =>  $this->getdeleteCouponRules(),
+            'canBuyCoupon'   =>  $this->getbuyCouponRules(),
             'buyCoupon'   =>  $this->getbuyCouponRules(),
+            'canUseCoupon'   =>  $this->getuseCouponRules(),
             'useCoupon'   =>  $this->getuseCouponRules(),
         };
     }

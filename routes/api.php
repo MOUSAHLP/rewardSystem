@@ -73,7 +73,9 @@ Route::group([
     Route::put('/update', 'updateCoupon');
     Route::delete('/delete', 'deleteCoupon');
 
+    Route::post('/canBuy', 'canBuyCoupon');
     Route::post('/buy', 'buyCoupon');
+    Route::post('/canUse', 'canUseCoupon');
     Route::post('/use', 'useCoupon');
 
     // Coupons Prices

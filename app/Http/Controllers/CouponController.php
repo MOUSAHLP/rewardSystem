@@ -133,7 +133,20 @@ class CouponController extends Controller
             'dataDeletedSuccessfully'
         );
     }
+    public function canBuyCoupon(CouponRequest $request)
+    {
+        $validatedData = $request->validated();
 
+        $user_total_points = $this->pointService->getUserValidPointsSum($validatedData["user_id"]);
+        [$can_use, $message] = $this->couponService->checkIfUserCanBuyCoupon($request, $user_total_points);
+        if (!$can_use) {
+            return $this->errorResponse($message, 400);
+        }
+        return $this->successResponse(
+            true,
+            'dataFetchedSuccessfully'
+        );
+    }
     public function buyCoupon(CouponRequest $request)
     {
         $validatedData = $request->validated();
@@ -141,17 +154,13 @@ class CouponController extends Controller
         $coupon = Coupon::where("id", $validatedData["coupon_id"])->with("price")->get()->first();
 
         $user_total_points = $this->pointService->getUserValidPointsSum($validatedData["user_id"]);
-
-        // check if the coupon has a price
-        if (!isset($coupon->price)) {
-            return $this->errorResponse("coupons.HasNOPrice", 400);
-        }
-
         $coupon_price = $coupon->price->coupon_price;
-        // check if the coupon price is greater than user's points
-        if ($user_total_points < $coupon_price) {
-            return $this->errorResponse("coupons.NoEnoughPoints", 400);
-        }
+
+         //check
+         [$can_use, $message] = $this->couponService->checkIfUserCanBuyCoupon($request,$user_total_points);
+         if (!$can_use) {
+             return $this->errorResponse($message, 400);
+         }
 
         // Remove user's valid points
         $user_valid_points = $this->pointService->getUserValidPoints($validatedData["user_id"]);
@@ -162,7 +171,6 @@ class CouponController extends Controller
                 $coupon_price = $coupon_price - ($point->points - $point->used_points);
                 $point->used_points = $point->points;
                 $point->save();
-
             } else {
                 $point->used_points += $coupon_price;
                 $coupon_price = 0;
@@ -188,10 +196,20 @@ class CouponController extends Controller
 
         return $this->successResponse(
             $coupon,
-            'dataAddedSuccessfully'
+            'dataFetchedSuccessfully'
         );
     }
-
+    public function canUseCoupon(CouponRequest $request)
+    {
+        [$can_use, $message] = $this->couponService->checkIfUserCanUseCoupon($request);
+        if (!$can_use) {
+            return $this->errorResponse($message, 400);
+        }
+        return $this->successResponse(
+            true,
+            'dataFetchedSuccessfully'
+        );
+    }
     public function useCoupon(CouponRequest $request)
     {
         $validatedData = $request->validated();
@@ -201,19 +219,11 @@ class CouponController extends Controller
             ->get()
             ->first();
 
-        // check if user has this coupon
-        if (!isset($coupon_user)) {
-            return $this->errorResponse("coupons.YouDontHaveThisCoupon", 400);
+        //check
+        [$can_use, $message] = $this->couponService->checkIfUserCanUseCoupon($request);
+        if (!$can_use) {
+            return $this->errorResponse($message, 400);
         }
-        // check if the coupon is used
-        if ($coupon_user->used_at != null) {
-            return $this->errorResponse("coupons.CouponUsed", 400);
-        }
-        // check if the coupon is expired
-        if ($coupon_user->expire_at < Carbon::now()) {
-            return $this->errorResponse("coupons.CouponExpired", 400);
-        }
-
         // get coupon value and coupon type
         $coupon_value = $coupon_user->coupon->value;
         $CouponType = CouponTypes::getName($coupon_user->coupon->couponType->type);
@@ -315,7 +325,7 @@ class CouponController extends Controller
     public function addcouponsType(CouponTypeRequest $request)
     {
         $fileNameToStore = $request->file('image')->hashName();
-        $request->file('image')->storeAs('public/images/couponsType',$fileNameToStore);
+        $request->file('image')->storeAs('public/images/couponsType', $fileNameToStore);
 
         $couponstype = CouponType::create([
             'name' => $request->name,
@@ -324,7 +334,7 @@ class CouponController extends Controller
         ]);
 
         return $this->successResponse(
-            new CouponTypeResource  ($couponstype),
+            new CouponTypeResource($couponstype),
             'dataAddedSuccessfully'
         );
     }

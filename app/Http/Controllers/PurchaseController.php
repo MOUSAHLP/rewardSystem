@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PurchaseResource;
 use App\Models\Purchase;
 use App\Services\RankService;
 use Illuminate\Http\Request;
@@ -12,7 +13,7 @@ class PurchaseController extends Controller
     {
     }
     public function getPurchases(){
-        $purchases = Purchase::with(["user","coupon"])->get();
+        $purchases = PurchaseResource::collection(Purchase::with(["user","coupon"])->get());
         return $this->successResponse(
             $purchases,
             'dataFetchedSuccessfully'
@@ -22,7 +23,7 @@ class PurchaseController extends Controller
         if ($this->rankService->checkIfUserExists($request->user_id)) {
             return $this->errorResponse("users.NotFound", 400);
         }
-        $user_purchases = Purchase::where("user_id",$request->user_id)->get();
+        $user_purchases = PurchaseResource::collection( Purchase::where("user_id",$request->user_id)->get());
         return $this->successResponse(
             $user_purchases,
             'dataFetchedSuccessfully'

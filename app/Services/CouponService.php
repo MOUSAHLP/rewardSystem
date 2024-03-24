@@ -6,12 +6,14 @@ use App\Http\Resources\CouponResource;
 use App\Models\Coupon;
 use App\Models\CouponType;
 use App\Models\CouponUser;
-use App\Models\Point;
 use App\Models\User;
 use Carbon\Carbon;
 
 class CouponService
 {
+    public function __construct(private PointService $pointService)
+    {
+    }
     public function getUserCoupons($user_id, $is_used)
     {
         if ($is_used) {
@@ -75,6 +77,70 @@ class CouponService
         return $coupon;
     }
 
+    public static function checkIfUserCanBuyCoupon($request,$user_total_points)
+    {
+        $validatedData = $request->validated();
+
+        $coupon = Coupon::where("id", $validatedData["coupon_id"])->with("price")->get()->first();
+
+        // check if the coupon has a price
+        if (!isset($coupon->price)) {
+            return [
+                false,
+                "coupons.HasNOPrice"
+            ];
+        }
+
+        $coupon_price = $coupon->price->coupon_price;
+        // check if the coupon price is greater than user's points
+        if ($user_total_points < $coupon_price) {
+            return [
+                false,
+                "coupons.NoEnoughPoints"
+            ];
+        }
+
+        return [
+            true,
+            'dataFetchedSuccessfully'
+        ];
+    }
+    public static function checkIfUserCanUseCoupon($request)
+    {
+        $validatedData = $request->validated();
+        $coupon_user = CouponUser::where("coupon_code", $validatedData["coupon_code"])
+            ->where("user_id", $validatedData["user_id"])
+            ->with(["coupon", "coupon.couponType"])
+            ->get()
+            ->first();
+
+        // check if user has this coupon
+        if (!isset($coupon_user)) {
+            return [
+                false,
+                "coupons.YouDontHaveThisCoupon"
+            ];
+        }
+        // check if the coupon is used
+        if ($coupon_user->used_at != null) {
+            return [
+                false,
+                "coupons.CouponUsed"
+            ];
+        }
+        // check if the coupon is expired
+        if ($coupon_user->expire_at < Carbon::now()) {
+            return [
+                false,
+                "coupons.CouponExpired"
+            ];
+        }
+
+        return [
+            true,
+            'dataFetchedSuccessfully'
+        ];
+    }
     public static function checkIfUserExists($user_id)
     {
         return User::where("id", $user_id)->count() == 0;

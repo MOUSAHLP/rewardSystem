@@ -26,6 +26,7 @@ class CouponRequest extends FormRequest
             'buyCoupon'   =>  $this->getbuyCouponRules(),
             'canUseCoupon'   =>  $this->getuseCouponRules(),
             'useCoupon'   =>  $this->getuseCouponRules(),
+            'buyAndUseCoupon'   =>  $this->getbuyCouponRules(),
         };
     }
 

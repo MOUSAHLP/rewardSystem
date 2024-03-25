@@ -77,7 +77,7 @@ class CouponService
         return $coupon;
     }
 
-    public static function checkIfUserCanBuyCoupon($request,$user_total_points)
+    public static function checkIfUserCanBuyCoupon($request, $user_total_points)
     {
         $validatedData = $request->validated();
 
@@ -100,8 +100,11 @@ class CouponService
             ];
         }
 
-        return [
-            true,
+        return   [
+            [
+                "can_use_coupon" => true,
+                "coupon" => new CouponResource($coupon)
+            ],
             'dataFetchedSuccessfully'
         ];
     }
@@ -137,7 +140,10 @@ class CouponService
         }
 
         return [
-            true,
+            [
+                "can_use_coupon" => true,
+                "coupon" => new CouponResource($coupon_user->coupon)
+            ],
             'dataFetchedSuccessfully'
         ];
     }

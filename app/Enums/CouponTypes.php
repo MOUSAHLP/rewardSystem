@@ -6,7 +6,7 @@ class CouponTypes
 {
     const FIXED_VALUE   = 1;
     const PERCENTAGE    = 2;
-    const FREE_DELIVERY = 3;
+    const DELIVERY = 3;
 
     public static function getName($value)
     {
@@ -23,7 +23,7 @@ class CouponTypes
         return [
             self::FIXED_VALUE,
             self::PERCENTAGE,
-            self::FREE_DELIVERY,
+            self::DELIVERY,
         ];
     }
 }

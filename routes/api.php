@@ -65,6 +65,7 @@ Route::group([
     Route::get('used/user/{user_id}', 'getUserUsedCoupons');
     Route::get('expired/user/{user_id}', 'getUserExpiredCoupons');
 
+    Route::get('offers', 'getOffersCoupons');
     Route::get('fixed_value', 'getFixedValueCoupons');
     Route::get('percentage', 'getPercentageCoupons');
     Route::get('delivery', 'getDeliveryCoupons');
@@ -77,6 +78,8 @@ Route::group([
     Route::post('/buy', 'buyCoupon');
     Route::post('/canUse', 'canUseCoupon');
     Route::post('/use', 'useCoupon');
+
+    Route::post('/buy-and-use', 'buyAndUseCoupon');
 
     // Coupons Prices
     Route::get('/prices', 'getCouponsPrices');

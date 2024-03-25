@@ -72,6 +72,20 @@ class CouponController extends Controller
             'dataFetchedSuccessfully'
         );
     }
+    public function getOffersCoupons()
+    {
+        $coupons = Coupon::with("price")->get()
+        ->filter(function ($model) {
+            if ($model->price != null) {
+                return true;
+            }
+            return false;
+        })->values();
+        return $this->successResponse(
+            CouponResource::collection($coupons),
+            'dataFetchedSuccessfully'
+        );
+    }
     public function getFixedValueCoupons()
     {
         $user_coupons = CouponResource::collection($this->couponService->get_Coupons_By_Type(CouponTypes::FIXED_VALUE));
@@ -93,7 +107,7 @@ class CouponController extends Controller
     }
     public function getDeliveryCoupons()
     {
-        $user_coupons = CouponResource::collection($this->couponService->get_Coupons_By_Type(CouponTypes::FREE_DELIVERY));
+        $user_coupons = CouponResource::collection($this->couponService->get_Coupons_By_Type(CouponTypes::DELIVERY));
 
         return $this->successResponse(
             $user_coupons,
@@ -143,8 +157,8 @@ class CouponController extends Controller
             return $this->errorResponse($message, 400);
         }
         return $this->successResponse(
-            true,
-            'dataFetchedSuccessfully'
+            $can_use,
+            $message
         );
     }
     public function buyCoupon(CouponRequest $request)
@@ -156,11 +170,11 @@ class CouponController extends Controller
         $user_total_points = $this->pointService->getUserValidPointsSum($validatedData["user_id"]);
         $coupon_price = $coupon->price->coupon_price;
 
-         //check
-         [$can_use, $message] = $this->couponService->checkIfUserCanBuyCoupon($request,$user_total_points);
-         if (!$can_use) {
-             return $this->errorResponse($message, 400);
-         }
+        //check
+        [$can_use, $message] = $this->couponService->checkIfUserCanBuyCoupon($request, $user_total_points);
+        if (!$can_use) {
+            return $this->errorResponse($message, 400);
+        }
 
         // Remove user's valid points
         $user_valid_points = $this->pointService->getUserValidPoints($validatedData["user_id"]);
@@ -206,8 +220,8 @@ class CouponController extends Controller
             return $this->errorResponse($message, 400);
         }
         return $this->successResponse(
-            true,
-            'dataFetchedSuccessfully'
+            $can_use,
+            $message
         );
     }
     public function useCoupon(CouponRequest $request)
@@ -224,9 +238,6 @@ class CouponController extends Controller
         if (!$can_use) {
             return $this->errorResponse($message, 400);
         }
-        // get coupon value and coupon type
-        $coupon_value = $coupon_user->coupon->value;
-        $CouponType = CouponTypes::getName($coupon_user->coupon->couponType->type);
 
         // make the coupon used
         $coupon_user->update([
@@ -235,9 +246,35 @@ class CouponController extends Controller
 
         // prepare data
         $data = [
-            "coupon_value"  => $coupon_value,
-            "CouponType" => $CouponType,
+            "coupon"  => new CouponResource($coupon_user->coupon),
         ];
+
+        return $this->successResponse(
+            $data,
+            'dataUpdatedSuccessfully'
+        );
+    }
+    public function buyAndUseCoupon(CouponRequest $request)
+    {
+        $buy_coupon = $this->buyCoupon($request)->getData();
+        if ($buy_coupon->statusCode >= 400) {
+            return $this->errorResponse($buy_coupon->message, 400);
+        }
+        $coupon_user = CouponUser::where("id", $buy_coupon->data->id)
+            ->with(["coupon"])
+            ->get()
+            ->first();
+
+        // make the coupon used
+        $coupon_user->update([
+            "used_at" => Carbon::now()
+        ]);
+
+        // prepare data
+        $data = [
+            "coupon"  => new CouponResource($coupon_user->coupon),
+        ];
+
         return $this->successResponse(
             $data,
             'dataUpdatedSuccessfully'

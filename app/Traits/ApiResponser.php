@@ -17,11 +17,13 @@ trait ApiResponser
 
     protected function errorResponse($message = null, $code = 500, $data = null)
     {
+        $error_message = trans()->has('messages.'.$message)?__('messages.'.$message):$message;
         return response()->json([
             'status' => 'Error',
-            'message' => __('messages.'.$message),
+            'message' => $error_message,
             'data' => $data,
             'statusCode' => $code
         ], $code);
     }
+
 }

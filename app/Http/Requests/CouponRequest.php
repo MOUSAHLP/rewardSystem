@@ -35,6 +35,7 @@ class CouponRequest extends FormRequest
         return [
             "coupon_type_id"=>"required|exists:coupons_types,id",
             "value"=> "required|integer",
+            "price"=> "required|integer",
             "description" => "required|max:1000",
         ];
     }
@@ -44,7 +45,7 @@ class CouponRequest extends FormRequest
             "id"=>"required|exists:coupons,id",
             "coupon_type_id"=>"required|exists:coupons_types,id",
             "value"=> "required|integer",
-
+            "price"=> "required|integer",
             "description" => "required|max:1000",
         ];
     }

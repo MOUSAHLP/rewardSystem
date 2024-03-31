@@ -129,7 +129,15 @@ class CouponController extends Controller
     public function updateCoupon(CouponRequest $request)
     {
         $validatedData = $request->validated();
-        Coupon::where("id", $validatedData["id"])->update($validatedData);
+        Coupon::where("id", $validatedData["id"])->update([
+            "coupon_type_id"=>$validatedData["coupon_type_id"],
+            "value"=>$validatedData["value"],
+            "description"=>$validatedData["description"],
+
+        ]);
+        CouponPrice::where("coupon_id", $validatedData["id"])->update([
+            "coupon_price"=>$validatedData["price"],
+        ]);
 
         return $this->successResponse(
             [],

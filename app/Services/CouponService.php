@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Http\Resources\CouponResource;
 use App\Models\Coupon;
+use App\Models\CouponPrice;
 use App\Models\CouponType;
 use App\Models\CouponUser;
 use App\Models\User;
@@ -74,7 +75,13 @@ class CouponService
         $coupon->created_at = Carbon::now();
 
         $coupon->save();
-        return $coupon;
+
+        $coupon_price = new CouponPrice();
+        $coupon_price->coupon_id = $coupon->id;
+        $coupon_price->coupon_price = $data["price"];
+        $coupon_price->save();
+
+        return new CouponResource($coupon);
     }
 
     public static function checkIfUserCanBuyCoupon($request, $user_total_points)

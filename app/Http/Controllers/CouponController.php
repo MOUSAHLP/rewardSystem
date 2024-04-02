@@ -75,12 +75,12 @@ class CouponController extends Controller
     public function getOffersCoupons()
     {
         $coupons = Coupon::with("price")->get()
-        ->filter(function ($model) {
-            if ($model->price != null) {
-                return true;
-            }
-            return false;
-        })->values();
+            ->filter(function ($model) {
+                if ($model->price != null) {
+                    return true;
+                }
+                return false;
+            })->values();
         return $this->successResponse(
             CouponResource::collection($coupons),
             'dataFetchedSuccessfully'
@@ -130,13 +130,13 @@ class CouponController extends Controller
     {
         $validatedData = $request->validated();
         Coupon::where("id", $validatedData["id"])->update([
-            "coupon_type_id"=>$validatedData["coupon_type_id"],
-            "value"=>$validatedData["value"],
-            "description"=>$validatedData["description"],
+            "coupon_type_id" => $validatedData["coupon_type_id"],
+            "value" => $validatedData["value"],
+            "description" => $validatedData["description"],
 
         ]);
         CouponPrice::where("coupon_id", $validatedData["id"])->update([
-            "coupon_price"=>$validatedData["price"],
+            "coupon_price" => $validatedData["price"],
         ]);
 
         return $this->successResponse(
@@ -155,6 +155,18 @@ class CouponController extends Controller
             'dataDeletedSuccessfully'
         );
     }
+    public function BulkDeleteCoupon(CouponRequest $request)
+    {
+        $validatedData = $request->validated();
+        foreach ($validatedData["coupon_ids"] as $coupon_id) {
+            Coupon::where("id", $coupon_id)->delete();
+        }
+        return $this->successResponse(
+            [],
+            'dataDeletedSuccessfully'
+        );
+    }
+
     public function canBuyCoupon(CouponRequest $request)
     {
         $validatedData = $request->validated();

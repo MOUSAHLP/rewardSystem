@@ -73,6 +73,7 @@ Route::group([
     Route::post('/add', 'addCoupon');
     Route::put('/update', 'updateCoupon');
     Route::delete('/delete', 'deleteCoupon');
+    Route::delete('/bulk-delete', 'BulkDeleteCoupon');
 
     Route::post('/canBuy', 'canBuyCoupon');
     Route::post('/buy', 'buyCoupon');

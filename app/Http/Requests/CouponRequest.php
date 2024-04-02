@@ -22,6 +22,7 @@ class CouponRequest extends FormRequest
             'addCoupon'   =>  $this->getaddCouponRules(),
             'updateCoupon'   =>  $this->getupdateCouponRules(),
             'deleteCoupon'   =>  $this->getdeleteCouponRules(),
+            'BulkDeleteCoupon'   =>  $this->getBulkDeleteCouponRules(),
             'canBuyCoupon'   =>  $this->getbuyCouponRules(),
             'buyCoupon'   =>  $this->getbuyCouponRules(),
             'canUseCoupon'   =>  $this->getuseCouponRules(),
@@ -33,19 +34,20 @@ class CouponRequest extends FormRequest
     public function getaddCouponRules()
     {
         return [
-            "coupon_type_id"=>"required|exists:coupons_types,id",
-            "value"=> "required|integer",
-            "price"=> "required|integer",
+            "coupon_type_id" => "required|exists:coupons_types,id",
+            "value" => "required|integer",
+            "price" => "required|integer",
             "description" => "required|max:1000",
         ];
     }
 
-    public function getupdateCouponRules(){
+    public function getupdateCouponRules()
+    {
         return [
-            "id"=>"required|exists:coupons,id",
-            "coupon_type_id"=>"required|exists:coupons_types,id",
-            "value"=> "required|integer",
-            "price"=> "required|integer",
+            "id" => "required|exists:coupons,id",
+            "coupon_type_id" => "required|exists:coupons_types,id",
+            "value" => "required|integer",
+            "price" => "required|integer",
             "description" => "required|max:1000",
         ];
     }
@@ -54,6 +56,15 @@ class CouponRequest extends FormRequest
     {
         return [
             "id" => "required|integer|exists:coupons,id"
+        ];
+    }
+    public function getBulkDeleteCouponRules()
+    {
+        return [
+            'coupon_ids'              => 'required|array|min:1',
+            'coupon_ids.*' => [
+                'integer',
+            ],
         ];
     }
 

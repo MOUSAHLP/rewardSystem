@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Http\Resources\CouponResource;
 use App\Models\Coupon;
-use App\Models\CouponPrice;
 use App\Models\CouponType;
 use App\Models\CouponUser;
 use App\Models\User;
@@ -20,29 +19,16 @@ class CouponService
         if ($is_used) {
             return CouponUser::where("user_id", $user_id)
                 ->where("used_at", "!=", null)
-                ->with(["coupon", "coupon.couponType", "coupon.price"])->get()
-                ->filter(function ($model) {
-                    return $model->coupon->price != null;
-                })->values()
+                ->with(["coupon", "coupon.couponType"])->get()
                 ->map(function ($model) {
-                    $model->coupon->setAttribute("coupon_code", $model->coupon_code);
-                    $model->coupon->setAttribute("expire_at", $model->expire_at);
-                    $model->coupon = new CouponResource($model->coupon);
-                    return $model->coupon;
+                    return (new CouponResource($model->coupon))->usedCoupon($model->coupon_code, $model->expire_at,$model->used_at);
                 });
         } else {
             return CouponUser::where("user_id", $user_id)
                 ->where("used_at", null)
-                ->with(["coupon", "coupon.couponType", "coupon.price"])->get()
-                ->filter(function ($model) {
-                    return $model->coupon->price != null;
-                })->values()
+                ->with(["coupon", "coupon.couponType"])->get()
                 ->map(function ($model) {
-                    $model->coupon->setAttribute("coupon_code", $model->coupon_code);
-                    $model->coupon->setAttribute("used_at", $model->used_at);
-                    $model->coupon->setAttribute("expire_at", $model->expire_at);
-                    $model->coupon = new CouponResource($model->coupon);
-                    return $model->coupon;
+                    return (new CouponResource($model->coupon))->notUsedCoupon($model->coupon_code, $model->expire_at);
                 });
         }
     }
@@ -53,14 +39,17 @@ class CouponService
             ->with(["coupon", "coupon.couponType"])
             ->where("used_at", null)
             ->whereDate('expire_at', '<', Carbon::now())
-            ->get()->pluck('coupon');
+            ->get()
+            ->map(function ($model) {
+                return (new CouponResource($model->coupon))->notUsedCoupon($model->coupon_code, $model->expire_at);
+            });
     }
     public static function get_Coupons_By_Type($coupon_type)
     {
-        return Coupon::with(["price", "couponType"])
+        return Coupon::with(["couponType"])
             ->get()
             ->filter(function ($model) use ($coupon_type) {
-                if ($model->couponType != null && $coupon_type == $model->couponType->type && $model->price != null) {
+                if ($model->couponType != null && $coupon_type == $model->couponType->type) {
                     return true;
                 }
                 return false;
@@ -71,16 +60,11 @@ class CouponService
         $coupon = new Coupon();
         $coupon->coupon_type_id = $data["coupon_type_id"];
         $coupon->value = $data["value"];
+        $coupon->price = $data["price"];
         $coupon->description = $data["description"];
         $coupon->created_at = Carbon::now();
 
         $coupon->save();
-
-        $coupon_price = new CouponPrice();
-        $coupon_price->coupon_id = $coupon->id;
-        $coupon_price->coupon_price = $data["price"];
-        $coupon_price->save();
-
         return new CouponResource($coupon);
     }
 
@@ -88,19 +72,10 @@ class CouponService
     {
         $validatedData = $request->validated();
 
-        $coupon = Coupon::where("id", $validatedData["coupon_id"])->with("price")->get()->first();
+        $coupon = Coupon::where("id", $validatedData["coupon_id"])->get()->first();
 
-        // check if the coupon has a price
-        if (!isset($coupon->price)) {
-            return [
-                false,
-                "coupons.HasNOPrice"
-            ];
-        }
-
-        $coupon_price = $coupon->price->coupon_price;
         // check if the coupon price is greater than user's points
-        if ($user_total_points < $coupon_price) {
+        if ($user_total_points < $coupon->price) {
             return [
                 false,
                 "coupons.NoEnoughPoints"

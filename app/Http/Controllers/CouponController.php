@@ -4,12 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Enums\CouponTypes;
 use App\Http\Requests\CouponRequest;
-use App\Http\Requests\CouponsPriceRequest;
 use App\Http\Requests\CouponTypeRequest;
 use App\Http\Resources\CouponResource;
 use App\Http\Resources\CouponTypeResource;
 use App\Models\Coupon;
-use App\Models\CouponPrice;
 use App\Models\CouponType;
 use App\Models\CouponUser;
 use App\Models\Purchase;
@@ -34,7 +32,6 @@ class CouponController extends Controller
     }
     public function getUserCoupons(Request $request)
     {
-
         if ($this->couponService->checkIfUserExists($request->user_id)) {
             return $this->errorResponse("users.NotFound", 400);
         }
@@ -64,28 +61,13 @@ class CouponController extends Controller
         if ($this->couponService->checkIfUserExists($request->user_id)) {
             return $this->errorResponse("users.NotFound", 400);
         }
-
-        $user_coupons = CouponResource::collection($this->couponService->getUserExpiredCoupons($request->user_id));
-
+        $user_coupons = $this->couponService->getUserExpiredCoupons($request->user_id);
         return $this->successResponse(
             $user_coupons,
             'dataFetchedSuccessfully'
         );
     }
-    public function getOffersCoupons()
-    {
-        $coupons = Coupon::with("price")->get()
-            ->filter(function ($model) {
-                if ($model->price != null) {
-                    return true;
-                }
-                return false;
-            })->values();
-        return $this->successResponse(
-            CouponResource::collection($coupons),
-            'dataFetchedSuccessfully'
-        );
-    }
+
     public function getFixedValueCoupons()
     {
         $user_coupons = CouponResource::collection($this->couponService->get_Coupons_By_Type(CouponTypes::FIXED_VALUE));
@@ -118,10 +100,10 @@ class CouponController extends Controller
     public function addCoupon(CouponRequest $request)
     {
         $validatedData = $request->validated();
-        $CouponPrice = $this->couponService->createCoupon($validatedData);
+        $Coupon = $this->couponService->createCoupon($validatedData);
 
         return $this->successResponse(
-            $CouponPrice,
+            $Coupon,
             'dataAddedSuccessfully'
         );
     }
@@ -129,15 +111,7 @@ class CouponController extends Controller
     public function updateCoupon(CouponRequest $request)
     {
         $validatedData = $request->validated();
-        Coupon::where("id", $validatedData["id"])->update([
-            "coupon_type_id" => $validatedData["coupon_type_id"],
-            "value" => $validatedData["value"],
-            "description" => $validatedData["description"],
-
-        ]);
-        CouponPrice::where("coupon_id", $validatedData["id"])->update([
-            "coupon_price" => $validatedData["price"],
-        ]);
+        Coupon::where("id", $validatedData["id"])->update($validatedData);
 
         return $this->successResponse(
             [],
@@ -185,10 +159,10 @@ class CouponController extends Controller
     {
         $validatedData = $request->validated();
 
-        $coupon = Coupon::where("id", $validatedData["coupon_id"])->with("price")->get()->first();
+        $coupon = Coupon::where("id", $validatedData["coupon_id"])->get()->first();
 
         $user_total_points = $this->pointService->getUserValidPointsSum($validatedData["user_id"]);
-        $coupon_price = $coupon->price->coupon_price;
+        $coupon_price = $coupon->price;
 
         //check
         [$can_use, $message] = $this->couponService->checkIfUserCanBuyCoupon($request, $user_total_points);
@@ -216,7 +190,7 @@ class CouponController extends Controller
         Purchase::create([
             "user_id"  => $validatedData["user_id"],
             "coupon_id" => $validatedData["coupon_id"],
-            "points" =>  $coupon->price->coupon_price
+            "points" =>  $coupon->price
         ]);
 
         // Add the coupon to the user
@@ -298,49 +272,6 @@ class CouponController extends Controller
         return $this->successResponse(
             $data,
             'dataUpdatedSuccessfully'
-        );
-    }
-
-    // ============== Coupons Prices ============== //
-    public function getCouponsPrices()
-    {
-        $coupon_prices = CouponPrice::all();
-        return $this->successResponse(
-            $coupon_prices,
-            'dataFetchedSuccessfully'
-        );
-    }
-
-    public function addCouponsPrice(CouponsPriceRequest $request)
-    {
-        $validatedData = $request->validated();
-        $CouponPrice = CouponPrice::create($validatedData);
-
-        return $this->successResponse(
-            $CouponPrice,
-            'dataAddedSuccessfully'
-        );
-    }
-
-    public function updateCouponsPrice(CouponsPriceRequest $request)
-    {
-        $validatedData = $request->validated();
-        CouponPrice::where("id", $validatedData["id"])->update($validatedData);
-
-        return $this->successResponse(
-            [],
-            'dataUpdatedSuccessfully'
-        );
-    }
-
-    public function deleteCouponsPrice(CouponsPriceRequest $request)
-    {
-        $validatedData = $request->validated();
-        CouponPrice::where("id", $validatedData["id"])->delete();
-
-        return $this->successResponse(
-            [],
-            'dataDeletedSuccessfully'
         );
     }
 

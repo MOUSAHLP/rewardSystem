@@ -9,12 +9,13 @@ class RankService
 {
     public function getUserCurrentRank($user_points)
     {
-        return Rank::where("limit", "<", $user_points)->orderBy("limit", "DESC")->first();
+        return Rank::where("limit", "<=", $user_points)->orderBy("limit", "DESC")->first();
     }
 
     public static function getUserNextRank($user_points)
     {
-        return Rank::where("limit", ">", $user_points)->orderBy("limit", "ASC")->first();
+        return Rank::where("limit", ">", $user_points)->orderBy("limit", "ASC")->first() ??
+               Rank::where("limit", ">=", $user_points)->orderBy("limit", "ASC")->first();
     }
 
     public static function checkIfUserExists($user_id)
@@ -29,11 +30,11 @@ class RankService
 
         $users = User::with("points")->get();
         foreach ($users as $user) {
-                if ($user->points->sum("points") > $rank_limit && $next_rank_limit >= $user->points->sum("points")) {
-                    $user["total_points"] = $user->points->sum("points");
-                    unset($user->points);
-                    $rank_users[] = $user;
-                };
+            if ($user->points->sum("points") > $rank_limit && $next_rank_limit >= $user->points->sum("points")) {
+                $user["total_points"] = $user->points->sum("points");
+                unset($user->points);
+                $rank_users[] = $user;
+            };
         }
         return  $rank_users;
     }
@@ -42,5 +43,4 @@ class RankService
     {
         return Rank::where("limit", ">", $rank_limit)->orderBy("limit", "ASC")->first();
     }
-
 }

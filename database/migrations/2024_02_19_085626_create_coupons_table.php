@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('coupon_type_id');
             $table->foreign('coupon_type_id')->references('id')->on('coupons_types');
             $table->bigInteger('value');
+            $table->bigInteger('price');
             $table->longText('description');
             $table->dateTime('created_at');
         });

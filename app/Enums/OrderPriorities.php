@@ -4,18 +4,21 @@ namespace App\Enums;
 
 class OrderPriorities
 {
-    const ULTIMATE   = 1;
-    const HIGH   = 2;
+    const ULTIMATE = 1;
+    const HIGH     = 2;
+    const priority = 3;
 
     public static function getNameArabic($priority)
     {
         switch ($priority) {
             case 1:
-                return "قصوى";
+                return "أولوية قصوى";
             case 2:
-                return "عالية";
+                return "أولوية عالية";
+            case 3:
+                return "أولوية";
         }
-        return "";
+        return "بدون أولوية";
     }
 
     public static function getName($value)
@@ -34,6 +37,7 @@ class OrderPriorities
         return [
             self::ULTIMATE,
             self::HIGH,
+            self::priority,
         ];
     }
 }

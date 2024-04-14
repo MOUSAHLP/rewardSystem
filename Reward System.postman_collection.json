@@ -314,6 +314,26 @@
 									"body": "{\n    \"status\": \"Success\",\n    \"message\": \"Data fetched successfully\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"achievement\": \"Corrupti quo facilis ut quo occaecati velit.\",\n            \"points\": 241,\n            \"description\": \"Est eum dignissimos quae voluptas.\",\n            \"segments\": 3,\n            \"achievements_done_count\": 3\n        },\n        {\n            \"id\": 3,\n            \"achievement\": \"Eius unde cum sit maxime aspernatur.\",\n            \"points\": 911,\n            \"description\": \"Earum ea ex non qui et est dolorem perspiciatis.\",\n            \"segments\": 3,\n            \"achievements_done_count\": 3\n        },\n        {\n            \"id\": 7,\n            \"achievement\": \"Incidunt commodi ea repudiandae nisi eligendi vitae omnis labore.\",\n            \"points\": 943,\n            \"description\": \"Ducimus placeat qui voluptatem blanditiis dolores autem.\",\n            \"segments\": 1,\n            \"achievements_done_count\": 1\n        },\n        {\n            \"id\": 8,\n            \"achievement\": \"Deserunt fuga vel unde ut.\",\n            \"points\": 584,\n            \"description\": \"Maxime quos in eligendi nihil.\",\n            \"segments\": 3,\n            \"achievements_done_count\": 0\n        },\n        {\n            \"id\": 9,\n            \"achievement\": \"Nulla in dolore accusantium suscipit.\",\n            \"points\": 14,\n            \"description\": \"Inventore repudiandae quia assumenda et quasi ducimus voluptatem.\",\n            \"segments\": 2,\n            \"achievements_done_count\": 0\n        },\n        {\n            \"id\": 10,\n            \"achievement\": \"Iusto soluta aperiam eum dolores culpa excepturi.\",\n            \"points\": 648,\n            \"description\": \"Labore rerum fugiat culpa suscipit quo aliquid possimus.\",\n            \"segments\": 1,\n            \"achievements_done_count\": 0\n        }\n    ],\n    \"statusCode\": 200\n}"
 								}
 							]
+						},
+						{
+							"name": "user achievement",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/achievements/user/20",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"achievements",
+										"user",
+										"20"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -330,7 +350,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"achievement_id\":3,\r\n    \"user_id\":2\r\n}",
+											"raw": "{\r\n    \"achievement_id\":18,\r\n    \"user_id\":20\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -810,7 +830,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"achievement\": \"required\",\r\n    \"points\": 100,\r\n    \"description\": \"required\",\r\n    \"segments\": 1\r\n}",
+									"raw": "{\r\n    \"achievement\": \"required\",\r\n    \"points\": 100,\r\n    \"description\": \"required\",\r\n    \"segments\": 0\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1994,6 +2014,34 @@
 									"body": "{\n    \"status\": \"Success\",\n    \"message\": \"Data updated successfully\",\n    \"data\": true,\n    \"statusCode\": 200\n}"
 								}
 							]
+						},
+						{
+							"name": "add point to user",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"user_id\":20,\r\n    \"points\":20,\r\n    \"achievement_id\":17\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/points/add-points",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"points",
+										"add-points"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				}
@@ -2535,7 +2583,7 @@
 											}
 										],
 										"url": {
-											"raw": "{{base_url}}/api/coupons/types/coupons/{type_id}",
+											"raw": "{{base_url}}/api/coupons/types/coupons/1",
 											"host": [
 												"{{base_url}}"
 											],
@@ -2544,7 +2592,7 @@
 												"coupons",
 												"types",
 												"coupons",
-												"{type_id}"
+												"1"
 											]
 										}
 									},
@@ -2723,105 +2771,6 @@
 							]
 						},
 						{
-							"name": "get coupons prices",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Accept",
-										"value": "application/json"
-									},
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									}
-								],
-								"url": {
-									"raw": "{{base_url}}/api/coupons/prices",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"api",
-										"coupons",
-										"prices"
-									]
-								}
-							},
-							"response": [
-								{
-									"name": "get coupons prices",
-									"originalRequest": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/json"
-											}
-										],
-										"url": {
-											"raw": "{{base_url}}/api/coupons/prices",
-											"host": [
-												"{{base_url}}"
-											],
-											"path": [
-												"api",
-												"coupons",
-												"prices"
-											]
-										}
-									},
-									"status": "OK",
-									"code": 200,
-									"_postman_previewlanguage": "json",
-									"header": [
-										{
-											"key": "Host",
-											"value": "127.0.0.1:8080"
-										},
-										{
-											"key": "Connection",
-											"value": "close"
-										},
-										{
-											"key": "X-Powered-By",
-											"value": "PHP/8.2.12"
-										},
-										{
-											"key": "Cache-Control",
-											"value": "no-cache, private"
-										},
-										{
-											"key": "Date",
-											"value": "Sun, 17 Mar 2024 11:50:20 GMT"
-										},
-										{
-											"key": "Content-Type",
-											"value": "application/json"
-										},
-										{
-											"key": "X-RateLimit-Limit",
-											"value": "60"
-										},
-										{
-											"key": "X-RateLimit-Remaining",
-											"value": "59"
-										},
-										{
-											"key": "Access-Control-Allow-Origin",
-											"value": "*"
-										}
-									],
-									"cookie": [],
-									"body": "{\n    \"status\": \"Success\",\n    \"message\": \"Data fetched successfully\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"coupon_id\": 2,\n            \"coupon_price\": 702\n        },\n        {\n            \"id\": 2,\n            \"coupon_id\": 2,\n            \"coupon_price\": 758\n        },\n        {\n            \"id\": 3,\n            \"coupon_id\": 5,\n            \"coupon_price\": 219\n        },\n        {\n            \"id\": 4,\n            \"coupon_id\": 7,\n            \"coupon_price\": 587\n        },\n        {\n            \"id\": 5,\n            \"coupon_id\": 3,\n            \"coupon_price\": 894\n        },\n        {\n            \"id\": 6,\n            \"coupon_id\": 10,\n            \"coupon_price\": 542\n        },\n        {\n            \"id\": 7,\n            \"coupon_id\": 7,\n            \"coupon_price\": 385\n        },\n        {\n            \"id\": 8,\n            \"coupon_id\": 3,\n            \"coupon_price\": 447\n        },\n        {\n            \"id\": 9,\n            \"coupon_id\": 8,\n            \"coupon_price\": 684\n        },\n        {\n            \"id\": 10,\n            \"coupon_id\": 9,\n            \"coupon_price\": 274\n        },\n        {\n            \"id\": 11,\n            \"coupon_id\": 11,\n            \"coupon_price\": 414\n        },\n        {\n            \"id\": 12,\n            \"coupon_id\": 16,\n            \"coupon_price\": 908\n        },\n        {\n            \"id\": 13,\n            \"coupon_id\": 7,\n            \"coupon_price\": 515\n        },\n        {\n            \"id\": 14,\n            \"coupon_id\": 12,\n            \"coupon_price\": 222\n        },\n        {\n            \"id\": 15,\n            \"coupon_id\": 9,\n            \"coupon_price\": 965\n        },\n        {\n            \"id\": 16,\n            \"coupon_id\": 8,\n            \"coupon_price\": 436\n        },\n        {\n            \"id\": 17,\n            \"coupon_id\": 18,\n            \"coupon_price\": 537\n        },\n        {\n            \"id\": 18,\n            \"coupon_id\": 13,\n            \"coupon_price\": 930\n        },\n        {\n            \"id\": 19,\n            \"coupon_id\": 6,\n            \"coupon_price\": 646\n        },\n        {\n            \"id\": 20,\n            \"coupon_id\": 8,\n            \"coupon_price\": 206\n        }\n    ],\n    \"statusCode\": 200\n}"
-								}
-							]
-						},
-						{
 							"name": "get fixed value coupons",
 							"request": {
 								"method": "GET",
@@ -2982,330 +2931,31 @@
 									"body": "{\n    \"status\": \"Success\",\n    \"message\": \"Data fetched successfully\",\n    \"data\": {\n        \"1\": {\n            \"id\": 2,\n            \"coupon_type_id\": 2,\n            \"value\": 563,\n            \"description\": \"Corporis blanditiis quia perferendis vitae facere eum labore sit.\",\n            \"created_at\": \"2024-03-09 04:34:38\",\n            \"price\": 18,\n            \"coupon_type\": {\n                \"id\": 2,\n                \"name\": \"Perry Erdman\",\n                \"image\": \"http://127.0.0.1:8000/storage/images/couponsType/C:\\\\Users\\\\Rafeef\\\\AppData\\\\Local\\\\Temp\\\\fakCC8A.tmp\",\n                \"is_percentage\": false\n            }\n        },\n        \"2\": {\n            \"id\": 3,\n            \"coupon_type_id\": 2,\n            \"value\": 28,\n            \"description\": \"Doloribus quisquam cum sequi id sit ullam vel.\",\n            \"created_at\": \"2024-02-21 07:57:51\",\n            \"price\": 594,\n            \"coupon_type\": {\n                \"id\": 2,\n                \"name\": \"Perry Erdman\",\n                \"image\": \"http://127.0.0.1:8000/storage/images/couponsType/C:\\\\Users\\\\Rafeef\\\\AppData\\\\Local\\\\Temp\\\\fakCC8A.tmp\",\n                \"is_percentage\": false\n            }\n        },\n        \"5\": {\n            \"id\": 6,\n            \"coupon_type_id\": 3,\n            \"value\": 994,\n            \"description\": \"Reiciendis nam eaque qui eum quibusdam quam.\",\n            \"created_at\": \"2024-03-01 15:18:41\",\n            \"price\": null,\n            \"coupon_type\": {\n                \"id\": 3,\n                \"name\": \"Prof. Elijah Schultz\",\n                \"image\": \"http://127.0.0.1:8000/storage/images/couponsType/C:\\\\Users\\\\Rafeef\\\\AppData\\\\Local\\\\Temp\\\\fakCC8B.tmp\",\n                \"is_percentage\": false\n            }\n        },\n        \"6\": {\n            \"id\": 7,\n            \"coupon_type_id\": 3,\n            \"value\": 442,\n            \"description\": \"Ab qui magni velit.\",\n            \"created_at\": \"2024-03-05 13:04:58\",\n            \"price\": 131,\n            \"coupon_type\": {\n                \"id\": 3,\n                \"name\": \"Prof. Elijah Schultz\",\n                \"image\": \"http://127.0.0.1:8000/storage/images/couponsType/C:\\\\Users\\\\Rafeef\\\\AppData\\\\Local\\\\Temp\\\\fakCC8B.tmp\",\n                \"is_percentage\": false\n            }\n        }\n    },\n    \"statusCode\": 200\n}"
 								}
 							]
+						},
+						{
+							"name": "get delivey coupons",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/coupons/delivery",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"coupons",
+										"delivery"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
 				{
 					"name": "Post Requests",
 					"item": [
-						{
-							"name": "coupons prices",
-							"item": [
-								{
-									"name": "add price",
-									"protocolProfileBehavior": {
-										"disabledSystemHeaders": {
-											"accept": true
-										}
-									},
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "Accept",
-												"value": "application/json",
-												"type": "text"
-											},
-											{
-												"key": "lang",
-												"value": "ar",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n        \"coupon_id\" : 1,\r\n        \"coupon_price\" : 100\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{base_url}}/api/coupons/add-price",
-											"host": [
-												"{{base_url}}"
-											],
-											"path": [
-												"api",
-												"coupons",
-												"add-price"
-											]
-										}
-									},
-									"response": [
-										{
-											"name": "added successfully",
-											"originalRequest": {
-												"method": "POST",
-												"header": [],
-												"body": {
-													"mode": "raw",
-													"raw": "{\r\n        \"coupon_id\" : 1,\r\n        \"coupon_price\" : 100\r\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{base_url}}/api/coupons/add-price",
-													"host": [
-														"{{base_url}}"
-													],
-													"path": [
-														"api",
-														"coupons",
-														"add-price"
-													]
-												}
-											},
-											"status": "OK",
-											"code": 200,
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Host",
-													"value": "127.0.0.1:8000"
-												},
-												{
-													"key": "Connection",
-													"value": "close"
-												},
-												{
-													"key": "X-Powered-By",
-													"value": "PHP/8.2.12"
-												},
-												{
-													"key": "Cache-Control",
-													"value": "no-cache, private"
-												},
-												{
-													"key": "Date",
-													"value": "Sun, 25 Feb 2024 09:26:19 GMT"
-												},
-												{
-													"key": "Content-Type",
-													"value": "application/json"
-												},
-												{
-													"key": "X-RateLimit-Limit",
-													"value": "60"
-												},
-												{
-													"key": "X-RateLimit-Remaining",
-													"value": "59"
-												},
-												{
-													"key": "Access-Control-Allow-Origin",
-													"value": "*"
-												}
-											],
-											"cookie": [],
-											"body": "{\n    \"status\": \"Success\",\n    \"message\": \"Data added successfully\",\n    \"data\": {\n        \"coupon_points\": 100,\n        \"coupon_value\": 100,\n        \"id\": 11\n    },\n    \"statusCode\": 200\n}"
-										}
-									]
-								},
-								{
-									"name": "update price",
-									"request": {
-										"method": "PUT",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"id\":1,\r\n    \"coupon_id\" : 1,\r\n    \"coupon_price\" : 10\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{base_url}}/api/coupons/update-price",
-											"host": [
-												"{{base_url}}"
-											],
-											"path": [
-												"api",
-												"coupons",
-												"update-price"
-											]
-										}
-									},
-									"response": [
-										{
-											"name": "example",
-											"originalRequest": {
-												"method": "PUT",
-												"header": [],
-												"body": {
-													"mode": "raw",
-													"raw": "{\r\n  \"id\": 1,\r\n    \"coupon_id\" : 1,\r\n    \"coupon_price\" : 10\r\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{base_url}}/api/coupons/update-price",
-													"host": [
-														"{{base_url}}"
-													],
-													"path": [
-														"api",
-														"coupons",
-														"update-price"
-													]
-												}
-											},
-											"status": "OK",
-											"code": 200,
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Host",
-													"value": "127.0.0.1:8000"
-												},
-												{
-													"key": "Connection",
-													"value": "close"
-												},
-												{
-													"key": "X-Powered-By",
-													"value": "PHP/8.2.12"
-												},
-												{
-													"key": "Cache-Control",
-													"value": "no-cache, private"
-												},
-												{
-													"key": "Date",
-													"value": "Sun, 25 Feb 2024 11:23:08 GMT"
-												},
-												{
-													"key": "Content-Type",
-													"value": "application/json"
-												},
-												{
-													"key": "X-RateLimit-Limit",
-													"value": "60"
-												},
-												{
-													"key": "X-RateLimit-Remaining",
-													"value": "59"
-												},
-												{
-													"key": "Access-Control-Allow-Origin",
-													"value": "*"
-												}
-											],
-											"cookie": [],
-											"body": "{\n    \"status\": \"Success\",\n    \"message\": \"Data updated successfully\",\n    \"data\": [],\n    \"statusCode\": 200\n}"
-										}
-									]
-								},
-								{
-									"name": "delete price",
-									"request": {
-										"method": "DELETE",
-										"header": [],
-										"body": {
-											"mode": "raw",
-											"raw": "{\r\n    \"id\":1\r\n}",
-											"options": {
-												"raw": {
-													"language": "json"
-												}
-											}
-										},
-										"url": {
-											"raw": "{{base_url}}/api/coupons/delete-price",
-											"host": [
-												"{{base_url}}"
-											],
-											"path": [
-												"api",
-												"coupons",
-												"delete-price"
-											]
-										}
-									},
-									"response": [
-										{
-											"name": "example",
-											"originalRequest": {
-												"method": "DELETE",
-												"header": [],
-												"body": {
-													"mode": "raw",
-													"raw": "{\r\n    \"id\":1\r\n}",
-													"options": {
-														"raw": {
-															"language": "json"
-														}
-													}
-												},
-												"url": {
-													"raw": "{{base_url}}/api/coupons/delete-price",
-													"host": [
-														"{{base_url}}"
-													],
-													"path": [
-														"api",
-														"coupons",
-														"delete-price"
-													]
-												}
-											},
-											"status": "OK",
-											"code": 200,
-											"_postman_previewlanguage": "json",
-											"header": [
-												{
-													"key": "Host",
-													"value": "127.0.0.1:8000"
-												},
-												{
-													"key": "Connection",
-													"value": "close"
-												},
-												{
-													"key": "X-Powered-By",
-													"value": "PHP/8.2.12"
-												},
-												{
-													"key": "Cache-Control",
-													"value": "no-cache, private"
-												},
-												{
-													"key": "Date",
-													"value": "Sun, 25 Feb 2024 11:28:11 GMT"
-												},
-												{
-													"key": "Content-Type",
-													"value": "application/json"
-												},
-												{
-													"key": "X-RateLimit-Limit",
-													"value": "60"
-												},
-												{
-													"key": "X-RateLimit-Remaining",
-													"value": "59"
-												},
-												{
-													"key": "Access-Control-Allow-Origin",
-													"value": "*"
-												}
-											],
-											"cookie": [],
-											"body": "{\n    \"status\": \"Success\",\n    \"message\": \"Data deleted successfully\",\n    \"data\": [],\n    \"statusCode\": 200\n}"
-										}
-									]
-								}
-							]
-						},
 						{
 							"name": "Coupon Types",
 							"item": [
@@ -3319,17 +2969,17 @@
 											"formdata": [
 												{
 													"key": "name",
-													"value": "sad",
+													"value": "توصيل مجاني",
 													"type": "text"
 												},
 												{
 													"key": "image",
 													"type": "file",
-													"src": "/C:/Users/Rafeef/Desktop/RewardSystem.png"
+													"src": "/C:/Users/Rafeef/Downloads/Telegram Desktop/DELEVERING-01.svg"
 												},
 												{
-													"key": "is_percentage",
-													"value": "0",
+													"key": "type",
+													"value": "3",
 													"type": "text"
 												}
 											]
@@ -3349,7 +2999,7 @@
 									},
 									"response": [
 										{
-											"name": "example",
+											"name": "add Coupon Type",
 											"originalRequest": {
 												"method": "POST",
 												"header": [],
@@ -3364,11 +3014,11 @@
 														{
 															"key": "image",
 															"type": "file",
-															"src": "/C:/Users/Rafeef/Desktop/RewardSystemDb.png"
+															"src": "postman-cloud:///1eed3df6-df89-4740-8bb2-98b95cdfc338"
 														},
 														{
-															"key": "is_percentage",
-															"value": "0",
+															"key": "type",
+															"value": "1",
 															"type": "text"
 														}
 													]
@@ -3392,7 +3042,7 @@
 											"header": [
 												{
 													"key": "Host",
-													"value": "127.0.0.1:8000"
+													"value": "127.0.0.1:8080"
 												},
 												{
 													"key": "Connection",
@@ -3408,7 +3058,7 @@
 												},
 												{
 													"key": "Date",
-													"value": "Wed, 28 Feb 2024 07:48:31 GMT"
+													"value": "Thu, 21 Mar 2024 08:35:10 GMT"
 												},
 												{
 													"key": "Content-Type",
@@ -3428,7 +3078,7 @@
 												}
 											],
 											"cookie": [],
-											"body": "{\n    \"status\": \"Success\",\n    \"message\": \"Data added successfully\",\n    \"data\": {\n        \"name\": \"sad\",\n        \"image\": \"http://127.0.0.1:8000/storage/images/couponsType/RewardSystemDb_1709106511.png\",\n        \"is_percentage\": \"0\",\n        \"id\": 4\n    },\n    \"statusCode\": 200\n}"
+											"body": "{\n    \"status\": \"Success\",\n    \"message\": \"Data added successfully\",\n    \"data\": {\n        \"id\": 5,\n        \"name\": \"sad\",\n        \"image\": \"http://127.0.0.1:8000/storage/images/couponsType/http://127.0.0.1:8000/storage/images/couponsType/Capture001_1711010110.png\",\n        \"type\": \"FIXED_VALUE\"\n    },\n    \"statusCode\": 200\n}"
 										}
 									]
 								},
@@ -3442,7 +3092,7 @@
 											"formdata": [
 												{
 													"key": "id",
-													"value": "1",
+													"value": "5",
 													"type": "text"
 												},
 												{
@@ -3453,11 +3103,11 @@
 												{
 													"key": "image",
 													"type": "file",
-													"src": "/C:/Users/Rafeef/Desktop/RewardSystemDb.png"
+													"src": "postman-cloud:///1eed3df6-df89-4740-8bb2-98b95cdfc338"
 												},
 												{
-													"key": "is_percentage",
-													"value": "0",
+													"key": "type",
+													"value": "2",
 													"type": "text"
 												}
 											]
@@ -3477,7 +3127,7 @@
 									},
 									"response": [
 										{
-											"name": "example",
+											"name": "update Coupon Type",
 											"originalRequest": {
 												"method": "POST",
 												"header": [],
@@ -3486,7 +3136,7 @@
 													"formdata": [
 														{
 															"key": "id",
-															"value": "1",
+															"value": "5",
 															"type": "text"
 														},
 														{
@@ -3497,11 +3147,11 @@
 														{
 															"key": "image",
 															"type": "file",
-															"src": "/C:/Users/Rafeef/Desktop/RewardSystemDb.png"
+															"src": "postman-cloud:///1eed3df6-df89-4740-8bb2-98b95cdfc338"
 														},
 														{
-															"key": "is_percentage",
-															"value": "0",
+															"key": "type",
+															"value": "2",
 															"type": "text"
 														}
 													]
@@ -3525,7 +3175,7 @@
 											"header": [
 												{
 													"key": "Host",
-													"value": "127.0.0.1:8000"
+													"value": "127.0.0.1:8080"
 												},
 												{
 													"key": "Connection",
@@ -3541,7 +3191,7 @@
 												},
 												{
 													"key": "Date",
-													"value": "Wed, 28 Feb 2024 07:49:43 GMT"
+													"value": "Thu, 21 Mar 2024 09:04:47 GMT"
 												},
 												{
 													"key": "Content-Type",
@@ -3561,7 +3211,7 @@
 												}
 											],
 											"cookie": [],
-											"body": "{\n    \"status\": \"Success\",\n    \"message\": \"Data updated successfully\",\n    \"data\": {\n        \"id\": \"1\",\n        \"name\": \"new name\",\n        \"image\": \"http://127.0.0.1:8000/storage/images/couponsType/RewardSystemDb_1709106583.png\",\n        \"is_percentage\": \"0\"\n    },\n    \"statusCode\": 200\n}"
+											"body": "{\n    \"status\": \"Success\",\n    \"message\": \"Data updated successfully\",\n    \"data\": {\n        \"id\": \"5\",\n        \"name\": \"new name\",\n        \"image\": \"http://127.0.0.1:8000/storage/images/couponsType/Capture001_1711011886.png\",\n        \"type\": \"2\"\n    },\n    \"statusCode\": 200\n}"
 										}
 									]
 								},
@@ -3678,7 +3328,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"coupon_type_id\": 1,\r\n    \"value\": 100,\r\n    \"description\": \"required required required required\"\r\n}",
+											"raw": "{\r\n    \"coupon_type_id\": 1,\r\n    \"value\": 100,\r\n    \"price\": 100,\r\n    \"description\": \"required required required required\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3777,7 +3427,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\r\n    \"id\":1,\r\n    \"coupon_type_id\":1,\r\n    \"value\":100,\r\n    \"description\" : \"required required required required required\"\r\n}",
+											"raw": "{\r\n    \"id\":1,\r\n    \"coupon_type_id\":1,\r\n    \"value\":100,\r\n    \"price\":100,\r\n    \"description\" : \"required required required required required\"\r\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -3967,6 +3617,34 @@
 											"body": "{\n    \"status\": \"Success\",\n    \"message\": \"Data deleted successfully\",\n    \"data\": [],\n    \"statusCode\": 200\n}"
 										}
 									]
+								},
+								{
+									"name": "bulk delete",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"coupon_ids\":[11,13]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/api/coupons/bulk-delete",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"api",
+												"coupons",
+												"bulk-delete"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						},
@@ -3977,7 +3655,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"user_id\":16,\r\n    \"coupon_id\":5\r\n}",
+									"raw": "{\r\n    \"user_id\":16,\r\n    \"coupon_id\":2\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -4076,7 +3754,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"user_id\":16,\r\n    \"coupon_code\":\"HoycyNYj\"\r\n}",
+									"raw": "{\r\n   \"user_id\":20,\r\n    \"coupon_code\":\"dfrtgh2D\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -4307,6 +3985,90 @@
 									"body": "{\n    \"status\": \"Error\",\n    \"message\": \"Coupon Has Already Been Used\",\n    \"data\": null,\n    \"statusCode\": 400\n}"
 								}
 							]
+						},
+						{
+							"name": "can Buy A Coupon",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"user_id\":16,\r\n    \"coupon_id\":1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/coupons/canBuy",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"coupons",
+										"canBuy"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "can Use Coupon",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"user_id\":20,\r\n    // \"coupon_code\":\"dfrtgh2D\"\r\n    \"coupon_code\":\"adfrtgh2D\"\r\n    //\"coupon_code\":\"OIH8Jd4s\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/coupons/canUse",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"coupons",
+										"canUse"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Buy And Use Coupon",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"user_id\":20,\r\n    \"coupon_id\":2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/api/coupons/buy-and-use",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"coupons",
+										"buy-and-use"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				}
@@ -4345,7 +4107,7 @@
 							},
 							"response": [
 								{
-									"name": "example",
+									"name": "get All Ranks",
 									"originalRequest": {
 										"method": "GET",
 										"header": [
@@ -4375,7 +4137,7 @@
 									"header": [
 										{
 											"key": "Host",
-											"value": "127.0.0.1:8000"
+											"value": "127.0.0.1:8080"
 										},
 										{
 											"key": "Connection",
@@ -4391,7 +4153,7 @@
 										},
 										{
 											"key": "Date",
-											"value": "Thu, 22 Feb 2024 13:16:16 GMT"
+											"value": "Wed, 20 Mar 2024 11:34:03 GMT"
 										},
 										{
 											"key": "Content-Type",
@@ -4403,7 +4165,7 @@
 										},
 										{
 											"key": "X-RateLimit-Remaining",
-											"value": "58"
+											"value": "59"
 										},
 										{
 											"key": "Access-Control-Allow-Origin",
@@ -4411,7 +4173,7 @@
 										}
 									],
 									"cookie": [],
-									"body": "{\n    \"status\": \"Success\",\n    \"message\": \"Data fetched successfully\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Et ipsa et quam similique sit accusamus.\",\n            \"limit\": 0,\n            \"features\": \"{\\\"coupon_per_mounth\\\":2,\\\"discount_on_deliver\\\":15}\",\n            \"description\": \"Deleniti aut et magnam et eum ut reiciendis.\",\n            \"color\": \"#6a991a\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Est dolor iste alias aut id.\",\n            \"limit\": 200,\n            \"features\": \"{\\\"coupon_per_mounth\\\":2,\\\"discount_on_deliver\\\":2}\",\n            \"description\": \"Blanditiis saepe occaecati omnis vero.\",\n            \"color\": \"#1c9363\"\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Accusamus sapiente dolorum est nesciunt in odit odio.\",\n            \"limit\": 500,\n            \"features\": \"{\\\"coupon_per_mounth\\\":4,\\\"discount_on_deliver\\\":14}\",\n            \"description\": \"Perspiciatis harum unde molestiae atque.\",\n            \"color\": \"#343247\"\n        },\n        {\n            \"id\": 4,\n            \"name\": \"Maiores velit quod quis sed asperiores eum.\",\n            \"limit\": 1000,\n            \"features\": \"{\\\"coupon_per_mounth\\\":1,\\\"discount_on_deliver\\\":18}\",\n            \"description\": \"Sint velit nostrum est numquam explicabo optio minus.\",\n            \"color\": \"#fe1f49\"\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Ducimus ea quisquam voluptate aut atque dolores.\",\n            \"limit\": 1200,\n            \"features\": \"{\\\"coupon_per_mounth\\\":0,\\\"discount_on_deliver\\\":0}\",\n            \"description\": \"Deserunt est error necessitatibus repudiandae fuga.\",\n            \"color\": \"#7f608f\"\n        },\n        {\n            \"id\": 6,\n            \"name\": \"Molestias velit facere vel velit eos consequatur.\",\n            \"limit\": 1500,\n            \"features\": \"{\\\"coupon_per_mounth\\\":3,\\\"discount_on_deliver\\\":13}\",\n            \"description\": \"Eum ratione sapiente nostrum voluptates ex modi repellendus.\",\n            \"color\": \"#258069\"\n        }\n    ],\n    \"statusCode\": 200\n}"
+									"body": "{\n    \"status\": \"Success\",\n    \"message\": \"Data fetched successfully\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Accusamus rem exercitationem at sequi consequuntur.\",\n            \"limit\": 0,\n            \"features\": [\n                {\n                    \"name\": \"coupon_per_month\",\n                    \"value\": 2,\n                    \"description\": \"كوبون حسم شهرياً عدد 2\"\n                },\n                {\n                    \"name\": \"discount_on_deliver\",\n                    \"value\": 15,\n                    \"description\": \"حسم 15% على التوصيل\"\n                },\n                {\n                    \"name\": \"priority\",\n                    \"value\": 1,\n                    \"description\": \"أولوية قصوى في التوصيل\"\n                }\n            ],\n            \"description\": \"Ipsum maiores dolorem tempora.\",\n            \"color\": \"#522c31\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Dicta reprehenderit vel molestias nesciunt.\",\n            \"limit\": 100,\n            \"features\": [\n                {\n                    \"name\": \"coupon_per_month\",\n                    \"value\": 2,\n                    \"description\": \"كوبون حسم شهرياً عدد 2\"\n                },\n                {\n                    \"name\": \"discount_on_deliver\",\n                    \"value\": 15,\n                    \"description\": \"حسم 15% على التوصيل\"\n                },\n                {\n                    \"name\": \"priority\",\n                    \"value\": 2,\n                    \"description\": \"أولوية عالية في التوصيل\"\n                }\n            ],\n            \"description\": \"Quam nulla delectus facilis perferendis non quisquam.\",\n            \"color\": \"#e3c86f\"\n        },\n        {\n            \"id\": 3,\n            \"name\": \"Sed debitis aut et ducimus est aut.\",\n            \"limit\": 200,\n            \"features\": [\n                {\n                    \"name\": \"coupon_per_month\",\n                    \"value\": 2,\n                    \"description\": \"كوبون حسم شهرياً عدد 2\"\n                },\n                {\n                    \"name\": \"discount_on_deliver\",\n                    \"value\": 15,\n                    \"description\": \"حسم 15% على التوصيل\"\n                },\n                {\n                    \"name\": \"priority\",\n                    \"value\": 3,\n                    \"description\": \"أولوية  في التوصيل\"\n                }\n            ],\n            \"description\": \"Deleniti est culpa ut odio voluptate ex.\",\n            \"color\": \"#1d22db\"\n        },\n        {\n            \"id\": 6,\n            \"name\": \"Quia voluptas magnam cum omnis ea tenetur.\",\n            \"limit\": 1120,\n            \"features\": [\n                {\n                    \"name\": \"coupon_per_month\",\n                    \"value\": 2,\n                    \"description\": \"كوبون حسم شهرياً عدد 2\"\n                },\n                {\n                    \"name\": \"discount_on_deliver\",\n                    \"value\": 15,\n                    \"description\": \"حسم 15% على التوصيل\"\n                },\n                {\n                    \"name\": \"priority\",\n                    \"value\": 1,\n                    \"description\": \"أولوية قصوى في التوصيل\"\n                }\n            ],\n            \"description\": \"Aliquid quo commodi eaque dicta eius.\",\n            \"color\": \"#2783ae\"\n        },\n        {\n            \"id\": 8,\n            \"name\": \"vip\",\n            \"limit\": 1500,\n            \"features\": [\n                {\n                    \"name\": \"coupon_per_month\",\n                    \"value\": 2,\n                    \"description\": \"كوبون حسم شهرياً عدد 2\"\n                },\n                {\n                    \"name\": \"discount_on_deliver\",\n                    \"value\": 15,\n                    \"description\": \"حسم 15% على التوصيل\"\n                },\n                {\n                    \"name\": \"priority\",\n                    \"value\": 1,\n                    \"description\": \"أولوية قصوى في التوصيل\"\n                }\n            ],\n            \"description\": \"string string string\",\n            \"color\": \"#13f423\"\n        },\n        {\n            \"id\": 7,\n            \"name\": \"vip\",\n            \"limit\": 1800,\n            \"features\": [\n                {\n                    \"name\": \"coupon_per_month\",\n                    \"value\": 2,\n                    \"description\": \"كوبون حسم شهرياً عدد 2\"\n                },\n                {\n                    \"name\": \"discount_on_deliver\",\n                    \"value\": 15,\n                    \"description\": \"حسم 15% على التوصيل\"\n                },\n                {\n                    \"name\": \"priority\",\n                    \"value\": 1,\n                    \"description\": \"أولوية قصوى في التوصيل\"\n                }\n            ],\n            \"description\": \"string string string\",\n            \"color\": \"#13f423\"\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Pariatur deleniti soluta id iste quaerat distinctio maiores reprehenderit.\",\n            \"limit\": 2657,\n            \"features\": [\n                {\n                    \"name\": \"coupon_per_month\",\n                    \"value\": 2,\n                    \"description\": \"كوبون حسم شهرياً عدد 2\"\n                },\n                {\n                    \"name\": \"discount_on_deliver\",\n                    \"value\": 15,\n                    \"description\": \"حسم 15% على التوصيل\"\n                },\n                {\n                    \"name\": \"priority\",\n                    \"value\": 1,\n                    \"description\": \"أولوية قصوى في التوصيل\"\n                }\n            ],\n            \"description\": \"Et ratione molestias commodi fugit impedit.\",\n            \"color\": \"#c38c79\"\n        },\n        {\n            \"id\": 4,\n            \"name\": \"Culpa sed voluptas doloremque ut.\",\n            \"limit\": 3853,\n            \"features\": [\n                {\n                    \"name\": \"coupon_per_month\",\n                    \"value\": 2,\n                    \"description\": \"كوبون حسم شهرياً عدد 2\"\n                },\n                {\n                    \"name\": \"discount_on_deliver\",\n                    \"value\": 15,\n                    \"description\": \"حسم 15% على التوصيل\"\n                },\n                {\n                    \"name\": \"priority\",\n                    \"value\": 1,\n                    \"description\": \"أولوية قصوى في التوصيل\"\n                }\n            ],\n            \"description\": \"Aut eius eligendi nulla id placeat et.\",\n            \"color\": \"#3df64d\"\n        }\n    ],\n    \"statusCode\": 200\n}"
 								}
 							]
 						},
@@ -4799,7 +4561,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"name\": \"vip\",\r\n    \"limit\": 1800,\r\n    \"features\": {\r\n        \"coupon_per_mounth\": 2,\r\n        \"discount_on_deliver\": 15\r\n    },\r\n    \"description\": \"string string string\",\r\n    \"color\": \"#13f423\"\r\n}",
+									"raw": "{\r\n    \"name\": \"vip\",\r\n    \"limit\": 1500,\r\n    \"features\": {\r\n        \"coupon_per_mounth\": 2,\r\n        \"discount_on_deliver\": 15\r\n    },\r\n    \"description\": \"string string string\",\r\n    \"color\": \"#13f423\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -5172,6 +4934,113 @@
 							]
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "Purchases",
+			"item": [
+				{
+					"name": "Get user Purchases",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/purchases/user/{user_id}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"purchases",
+								"user",
+								"{user_id}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "example",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/api/purchases/user/16",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"api",
+										"purchases",
+										"user",
+										"16"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8080"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.12"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 20 Mar 2024 12:33:24 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"Success\",\n    \"message\": \"Data fetched successfully\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"user_id\": 16,\n            \"coupon_id\": 5,\n            \"points\": 75,\n            \"created_at\": \"2024-03-20T12:01:54.000000Z\",\n            \"updated_at\": \"2024-03-20T12:01:54.000000Z\"\n        },\n        {\n            \"id\": 2,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 18,\n            \"created_at\": \"2024-03-20T12:02:50.000000Z\",\n            \"updated_at\": \"2024-03-20T12:02:50.000000Z\"\n        },\n        {\n            \"id\": 3,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 18,\n            \"created_at\": \"2024-03-20T12:03:38.000000Z\",\n            \"updated_at\": \"2024-03-20T12:03:38.000000Z\"\n        },\n        {\n            \"id\": 4,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 18,\n            \"created_at\": \"2024-03-20T12:03:56.000000Z\",\n            \"updated_at\": \"2024-03-20T12:03:56.000000Z\"\n        },\n        {\n            \"id\": 5,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 18,\n            \"created_at\": \"2024-03-20T12:04:49.000000Z\",\n            \"updated_at\": \"2024-03-20T12:04:49.000000Z\"\n        },\n        {\n            \"id\": 6,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 18,\n            \"created_at\": \"2024-03-20T12:06:21.000000Z\",\n            \"updated_at\": \"2024-03-20T12:06:21.000000Z\"\n        },\n        {\n            \"id\": 7,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 20,\n            \"created_at\": \"2024-03-20T12:06:53.000000Z\",\n            \"updated_at\": \"2024-03-20T12:06:53.000000Z\"\n        },\n        {\n            \"id\": 8,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 20,\n            \"created_at\": \"2024-03-20T12:07:25.000000Z\",\n            \"updated_at\": \"2024-03-20T12:07:25.000000Z\"\n        },\n        {\n            \"id\": 9,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 20,\n            \"created_at\": \"2024-03-20T12:10:48.000000Z\",\n            \"updated_at\": \"2024-03-20T12:10:48.000000Z\"\n        },\n        {\n            \"id\": 10,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 20,\n            \"created_at\": \"2024-03-20T12:11:33.000000Z\",\n            \"updated_at\": \"2024-03-20T12:11:33.000000Z\"\n        },\n        {\n            \"id\": 11,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 20,\n            \"created_at\": \"2024-03-20T12:11:41.000000Z\",\n            \"updated_at\": \"2024-03-20T12:11:41.000000Z\"\n        },\n        {\n            \"id\": 12,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 20,\n            \"created_at\": \"2024-03-20T12:11:55.000000Z\",\n            \"updated_at\": \"2024-03-20T12:11:55.000000Z\"\n        },\n        {\n            \"id\": 13,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 20,\n            \"created_at\": \"2024-03-20T12:12:03.000000Z\",\n            \"updated_at\": \"2024-03-20T12:12:03.000000Z\"\n        },\n        {\n            \"id\": 14,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 865,\n            \"created_at\": \"2024-03-20T12:12:33.000000Z\",\n            \"updated_at\": \"2024-03-20T12:12:33.000000Z\"\n        },\n        {\n            \"id\": 15,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 865,\n            \"created_at\": \"2024-03-20T12:12:43.000000Z\",\n            \"updated_at\": \"2024-03-20T12:12:43.000000Z\"\n        },\n        {\n            \"id\": 16,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 900,\n            \"created_at\": \"2024-03-20T12:13:45.000000Z\",\n            \"updated_at\": \"2024-03-20T12:13:45.000000Z\"\n        },\n        {\n            \"id\": 17,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 900,\n            \"created_at\": \"2024-03-20T12:14:13.000000Z\",\n            \"updated_at\": \"2024-03-20T12:14:13.000000Z\"\n        },\n        {\n            \"id\": 18,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 900,\n            \"created_at\": \"2024-03-20T12:15:41.000000Z\",\n            \"updated_at\": \"2024-03-20T12:15:41.000000Z\"\n        },\n        {\n            \"id\": 19,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 900,\n            \"created_at\": \"2024-03-20T12:18:25.000000Z\",\n            \"updated_at\": \"2024-03-20T12:18:25.000000Z\"\n        },\n        {\n            \"id\": 20,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 900,\n            \"created_at\": \"2024-03-20T12:20:08.000000Z\",\n            \"updated_at\": \"2024-03-20T12:20:08.000000Z\"\n        },\n        {\n            \"id\": 21,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 900,\n            \"created_at\": \"2024-03-20T12:21:11.000000Z\",\n            \"updated_at\": \"2024-03-20T12:21:11.000000Z\"\n        },\n        {\n            \"id\": 22,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 900,\n            \"created_at\": \"2024-03-20T12:21:34.000000Z\",\n            \"updated_at\": \"2024-03-20T12:21:34.000000Z\"\n        },\n        {\n            \"id\": 23,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 900,\n            \"created_at\": \"2024-03-20T12:21:41.000000Z\",\n            \"updated_at\": \"2024-03-20T12:21:41.000000Z\"\n        },\n        {\n            \"id\": 24,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 900,\n            \"created_at\": \"2024-03-20T12:22:10.000000Z\",\n            \"updated_at\": \"2024-03-20T12:22:10.000000Z\"\n        },\n        {\n            \"id\": 25,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 900,\n            \"created_at\": \"2024-03-20T12:22:43.000000Z\",\n            \"updated_at\": \"2024-03-20T12:22:43.000000Z\"\n        },\n        {\n            \"id\": 26,\n            \"user_id\": 16,\n            \"coupon_id\": 2,\n            \"points\": 900,\n            \"created_at\": \"2024-03-20T12:23:37.000000Z\",\n            \"updated_at\": \"2024-03-20T12:23:37.000000Z\"\n        }\n    ],\n    \"statusCode\": 200\n}"
+						}
+					]
+				},
+				{
+					"name": "Get all purchases",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/purchases/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"purchases",
+								""
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}

@@ -39,7 +39,7 @@ class AchievementRequest extends FormRequest
     public function getaddAchievementRules(){
         return [
             'achievement_id' => 'required|exists:achievements,id',
-            'user_id' => 'required|exists:users,id'
+            'user_id' => 'required'
         ];
     }
 
@@ -52,10 +52,10 @@ class AchievementRequest extends FormRequest
 
     public function getAddRules(){
         return [
-            "achievement" => "required",
-            "points" => "required",
+            "achievement" => "required|string",
+            "points" => "required|integer",
             "description" => "required",
-            "segments" => "required"
+            "segments" => "required|integer"
 
         ];
     }
@@ -67,11 +67,10 @@ class AchievementRequest extends FormRequest
     public function getupdateRules(){
         return [
             "id" => "required",
-            "achievement" => "required",
-            "points" => "required",
+            "achievement" => "required|string",
+            "points" => "required|integer",
             "description" => "required",
-            "segments" => "required"
-
+            "segments" => "required|integer"
         ];
     }
 

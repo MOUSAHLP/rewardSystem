@@ -34,6 +34,8 @@ Route::group([
     Route::get('expired/user/{user_id}', 'getUserExpiredPoints');
     Route::get('used/user/{user_id}', 'getUserUsedPoints');
 
+    Route::post('/add-points', 'addPointsToUser');
+
     Route::get('/value', 'getPointsValue');
     Route::post('/set-value', 'setPointsValue');
 });
@@ -44,6 +46,7 @@ Route::group([
     'prefix' => "achievements",
 ], function () {
     Route::get('/', 'getAllAchievements');
+    Route::get('user/{user_id}', 'getUserAchievements');
     Route::get('done/user/{user_id}', 'getUserDoneAchievements');
     Route::get('not-done/user/{user_id}', 'getUserNotDoneAchievements');
 
@@ -65,7 +68,6 @@ Route::group([
     Route::get('used/user/{user_id}', 'getUserUsedCoupons');
     Route::get('expired/user/{user_id}', 'getUserExpiredCoupons');
 
-    Route::get('offers', 'getOffersCoupons');
     Route::get('fixed_value', 'getFixedValueCoupons');
     Route::get('percentage', 'getPercentageCoupons');
     Route::get('delivery', 'getDeliveryCoupons');
@@ -81,12 +83,6 @@ Route::group([
     Route::post('/use', 'useCoupon');
 
     Route::post('/buy-and-use', 'buyAndUseCoupon');
-
-    // Coupons Prices
-    Route::get('/prices', 'getCouponsPrices');
-    Route::post('/add-price', 'addCouponsPrice');
-    Route::put('/update-price', 'updateCouponsPrice');
-    Route::delete('/delete-price', 'deleteCouponsPrice');
 
     // Coupons Types
     Route::group([

@@ -27,12 +27,21 @@ class PointRequest extends FormRequest
     public function rules(): array
     {
         return match ($this->route()->getActionMethod()) {
+            'addPointsToUser'   =>  $this->getaddPointsToUserRules(),
             'setPointsValue'   =>  $this->getsetPointsValueRules(),
         };
-
+    }
+    public function getaddPointsToUserRules()
+    {
+        return [
+            'user_id' => 'required|exists:users,id',
+            'points' => 'required|numeric',
+            'achievement_id' => 'required|exists:achievements,id',
+        ];
     }
 
-    public function getsetPointsValueRules(){
+    public function getsetPointsValueRules()
+    {
         return [
             'value' => 'required|numeric',
         ];
@@ -42,7 +51,7 @@ class PointRequest extends FormRequest
     {
         throw new HttpResponseException(response()->json([
             'status' => 'Error',
-            'message' =>$validator->errors()->first(),
+            'message' => $validator->errors()->first(),
             'data' => null,
             'statusCode' => 422
 

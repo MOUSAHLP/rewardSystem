@@ -17,7 +17,7 @@ class AchievementController extends Controller
     }
     public function getAllAchievements()
     {
-        $achievements =AchievementResource::collection(Achievement::all());
+        $achievements = AchievementResource::collection(Achievement::all());
 
         return $this->successResponse(
             $achievements,
@@ -32,9 +32,20 @@ class AchievementController extends Controller
             ->where('user_id', $validatedData['user_id'])
             ->get();
 
-        // if the segment is greater than the achievement's segments
         $achievement = Achievement::find($validatedData['achievement_id']);
-        if ( $achievement->segments <= $get_user_segments->count()) {
+
+        // if the segment is equal to 0 then the achievement does not end
+        // then we dont need to increment
+        if ($achievement->segments == 0) {
+            $this->achievementService->createPoint($validatedData, $achievement->points);
+            return $this->successResponse(
+                [],
+                'dataAddedSuccessfully'
+            );
+        }
+
+        // if the segment is greater than the achievement's segments
+        if ($achievement->segments <= $get_user_segments->count()) {
             return $this->errorResponse(
                 'achievementAlreadyDone',
                 403
@@ -45,16 +56,16 @@ class AchievementController extends Controller
 
         $is_done = $AchievementUser->achievement->segments == $get_user_segments->count() + 1;
         $remaining_segments = $AchievementUser->achievement->segments - ($get_user_segments->count() + 1);
-
         // if the Achievement is done add points to the User
+        $added_points= 0;
         if ($is_done) {
-            $this->achievementService->createPoint($validatedData,$achievement->points);
+            $added_points = $this->achievementService->createPoint($validatedData, $achievement->points)->points;
         }
-
         $data = [
             "achievement_segments" => $AchievementUser->achievement->segments,
             "is_done"           => $is_done,
             "remaining_segments" => $remaining_segments,
+            "added_points" => $added_points,
         ];
 
         return $this->successResponse(
@@ -127,10 +138,6 @@ class AchievementController extends Controller
         );
     }
 
-
-
-       // AA
-
     public function deleteAchievement(AchievementRequest $request)
     {
         $validatedData = $request->validated();
@@ -139,12 +146,12 @@ class AchievementController extends Controller
         $achievement = Achievement::find($validatedData['achievement_id']);
         $remaining_segments = $achievement->segments - ($user_segments->count() - 1);
 
-        if($user_segments->first() == null)return $this->errorResponse('dataNotFound',404);
+        if ($user_segments->first() == null) return $this->errorResponse('dataNotFound', 404);
         $user_segments->first()->delete();
 
         // if the points were added previously delete them
         $point = Point::where($validatedData)->first();
-        if(isset($point)){
+        if (isset($point)) {
             $point->delete();
         }
 
@@ -159,6 +166,18 @@ class AchievementController extends Controller
         );
     }
 
+    public function getUserAchievements(Request $request)
+    {
+        if ($this->achievementService->checkIfUserExists($request->user_id)) {
+            return $this->errorResponse("users.NotFound", 400);
+        }
+        $user_achievements = AchievementResource::collection($this->achievementService->getUserAchievements($request->user_id));
+
+        return $this->successResponse(
+            $user_achievements,
+            'dataFetchedSuccessfully'
+        );
+    }
     public function getUserDoneAchievements(Request $request)
     {
         if ($this->achievementService->checkIfUserExists($request->user_id)) {

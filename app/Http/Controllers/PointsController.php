@@ -114,6 +114,15 @@ class PointsController extends Controller
             'dataFetchedSuccessfully'
         );
     }
+    public function addPointsToUser(PointRequest $request)
+    {
+        $validatedData = $request->validated();
+        $this->pointService->createPoint($validatedData);
+        return $this->successResponse(
+            [],
+            'dataFetchedSuccessfully'
+        );
+    }
 
     public function getPointsValue()
     {
@@ -127,7 +136,7 @@ class PointsController extends Controller
     public function setPointsValue(PointRequest $request)
     {
         $validatedData = $request->validated();
-        $points_value = PointInPound::first()->update(["value"=>$request["value"]]);
+        $points_value = PointInPound::first()->update(["value"=>$validatedData["value"]]);
         return $this->successResponse(
             $points_value,
             'dataUpdatedSuccessfully'

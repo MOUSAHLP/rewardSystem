@@ -52,7 +52,17 @@ class PointService
         return Point::where("user_id", $user_id)
             ->where("used_at", "!=", NULL)->get();
     }
-
+    public static function createPoint($validatedData)
+    {
+        $point = new Point();
+        $point->user_id = $validatedData['user_id'];
+        $point->points = $validatedData["points"];
+        $point->achievement_id = $validatedData['achievement_id'];
+        $point->created_at = Carbon::now()->format("Y-m-d H:i:s");
+        $point->used_at = null;
+        $point->expire_at = Carbon::now()->addDays(90)->format("Y-m-d H:i:s");
+        $point->save();
+    }
     public static function checkIfUserExists($user_id)
     {
         return User::where("id", $user_id)->count() == 0;

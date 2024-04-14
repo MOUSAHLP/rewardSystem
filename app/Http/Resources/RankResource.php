@@ -42,7 +42,7 @@ class RankResource extends JsonResource
             return   "حسم " . $features[$feature] . "% على التوصيل";
         }
         if ($feature == RanksFeatures::DELIVER_PRIORITY) {
-            return "أولوية " . OrderPriorities::getNameArabic($features[$feature]) . " في التوصيل";
+            return OrderPriorities::getNameArabic($features[$feature]) . " في التوصيل";
         }
 
         return $feature;

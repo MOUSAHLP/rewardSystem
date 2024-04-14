@@ -13,6 +13,7 @@ class Coupon extends Model
     protected $fillable = [
         'coupon_type_id',
         'value',
+        'price',
         'description',
         'created_at',
     ];
@@ -26,9 +27,4 @@ class Coupon extends Model
     {
         return $this->belongsTo(CouponType::class);
     }
-
-    public function price(){
-        return $this->hasOne(CouponPrice::class);
-    }
-
 }

@@ -13,7 +13,7 @@ class CouponResource extends JsonResource
         return [
             'id'    => $this->id,
             'value' => (int)$this->value,
-            'price' => $this->price,
+            'price' => (int) $this->price,
             'coupon_type'  => new CouponTypeResource(CouponType::find($this->coupon_type_id)),
             $this->mergeWhen(
                 $this->coupon_code != null,
@@ -44,7 +44,7 @@ class CouponResource extends JsonResource
         return [
             'id'    => $this->id,
             'value' => (int)$this->value,
-            'price' => $this->price,
+            'price' => (int) $this->price,
             'coupon_type'  => new CouponTypeResource(CouponType::find($this->coupon_type_id)),
             'coupon_code' => $coupon_code,
             'description'  => $this->description,
@@ -58,7 +58,7 @@ class CouponResource extends JsonResource
         return [
             'id'    => $this->id,
             'value' => (int)$this->value,
-            'price' => $this->price,
+            'price' => (int) $this->price,
             'coupon_type'  => new CouponTypeResource(CouponType::find($this->coupon_type_id)),
             'coupon_code' => $coupon_code,
             'description'  => $this->description,

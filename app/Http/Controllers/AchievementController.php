@@ -39,7 +39,9 @@ class AchievementController extends Controller
         if ($achievement->segments == 0) {
             $this->achievementService->createPoint($validatedData, $achievement->points);
             return $this->successResponse(
-                [],
+                [
+                    "added_points" => $achievement->points,
+                ],
                 'dataAddedSuccessfully'
             );
         }
@@ -57,7 +59,7 @@ class AchievementController extends Controller
         $is_done = $AchievementUser->achievement->segments == $get_user_segments->count() + 1;
         $remaining_segments = $AchievementUser->achievement->segments - ($get_user_segments->count() + 1);
         // if the Achievement is done add points to the User
-        $added_points= 0;
+        $added_points = 0;
         if ($is_done) {
             $added_points = $this->achievementService->createPoint($validatedData, $achievement->points)->points;
         }

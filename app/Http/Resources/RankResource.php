@@ -12,12 +12,12 @@ class RankResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'          => $this->id,
-            'name'        => $this->name,
-            'limit'       => (int)$this->limit,
-            'features'    => $this->featuresDescription($this->features),
-            'description' => $this->description,
-            'color'       => $this->color,
+            'id'          => $this->id ?? 0,
+            'name'        => $this->name ?? "",
+            'limit'       => isset($this->limit) ? (int)$this->limit : 0,
+            'features'    => isset($this->limit) ? $this->featuresDescription($this->features) : [["name" => "", "value" => 0, "description"=>""]],
+            'description' => $this->description ?? "",
+            'color'       => $this->color ?? "#ffffff",
         ];
     }
     public function featuresDescription($features)

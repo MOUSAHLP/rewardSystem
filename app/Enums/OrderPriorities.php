@@ -12,13 +12,13 @@ class OrderPriorities
     {
         switch ($priority) {
             case 1:
-                return "أولوية قصوى";
+                return __("messages.Ranks.UltimatePriority");
             case 2:
-                return "أولوية عالية";
+                return __("messages.Ranks.HighPriority");
             case 3:
-                return "أولوية";
+                return __("messages.Ranks.priority");
         }
-        return "بدون أولوية";
+        return __("messages.Ranks.noPriority");
     }
 
     public static function getName($value)

@@ -31,16 +31,16 @@ return [
 
     //users
     "users" => [
-        "NotFound"=> "المستخدم غير موجودة",
+        "NotFound" => "المستخدم غير موجودة",
     ],
 
     //coupons
-      "coupons" => [
-        "HasNOPrice"=> "هذه القسيمة ليس لديها سعر",
-        "NoEnoughPoints"=> "النقاط غير كافية",
-        "YouDontHaveThisCoupon"=> "ليس لديك هذه القسيمة",
-        "CouponExpired"=> "القسيمة منتهية الصلاحية",
-        "CouponUsed"=> "القسيمة مستخدمة بالفعل",
+    "coupons" => [
+        "HasNOPrice" => "هذه القسيمة ليس لديها سعر",
+        "NoEnoughPoints" => "النقاط غير كافية",
+        "YouDontHaveThisCoupon" => "ليس لديك هذه القسيمة",
+        "CouponExpired" => "القسيمة منتهية الصلاحية",
+        "CouponUsed" => "القسيمة مستخدمة بالفعل",
 
     ],
 
@@ -49,7 +49,17 @@ return [
 
     // Ranks
     "Ranks" => [
-        "NotFound"=> "الرتبة غير موجودة",
+        "NotFound" => "الرتبة غير موجودة",
+
+        "MonthlyCoupons" =>  "كوبون حسم شهرياً عدد ",
+        "discount" => "حسم ",
+        "OnDelivery" => " على التوصيل",
+        "InDelivery" => " في التوصيل",
+
+        "UltimatePriority" => "أولوية قصوى",
+        "HighPriority" =>"أولوية عالية",
+        "priority" =>  "أولوية",
+        "noPriority" => "بدون أولوية",
     ],
 
     //Auth msgs

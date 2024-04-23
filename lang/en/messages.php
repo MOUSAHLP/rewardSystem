@@ -31,16 +31,17 @@ return [
 
     //users
     "users" => [
-        "NotFound" =>"User Not Found",
+        "NotFound" => "User Not Found",
+
     ],
 
     //coupons
     "coupons" => [
-        "HasNOPrice"=> "This Coupon Has NO Price",
-        "NoEnoughPoints"=> "No Enough Points",
-        "YouDontHaveThisCoupon"=> "You Dont Have This Coupon",
-        "CouponExpired"=> "Coupon Is Expired",
-        "CouponUsed"=> "Coupon Has Already Been Used",
+        "HasNOPrice" => "This Coupon Has NO Price",
+        "NoEnoughPoints" => "No Enough Points",
+        "YouDontHaveThisCoupon" => "You Dont Have This Coupon",
+        "CouponExpired" => "Coupon Is Expired",
+        "CouponUsed" => "Coupon Has Already Been Used",
 
     ],
     // Achievements
@@ -49,6 +50,16 @@ return [
     // Ranks
     "Ranks" => [
         "NotFound" => "Rank Not Found",
+        "MonthlyCoupons" =>  "Monthly Coupons ",
+        "discount" => "discount ",
+        "OnDelivery" => " On Delivery",
+        "InDelivery" => " In Delivery",
+
+        "UltimatePriority" => "Ultimate Priority",
+        "HighPriority" => "High Priority",
+        "priority" =>  "Priority",
+        "noPriority" => "No Priority",
+
     ],
 
     //Auth msgs

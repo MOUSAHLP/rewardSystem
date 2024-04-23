@@ -15,7 +15,7 @@ class RankResource extends JsonResource
             'id'          => $this->id ?? 0,
             'name'        => $this->name ?? "",
             'limit'       => isset($this->limit) ? (int)$this->limit : 0,
-            'features'    => isset($this->limit) ? $this->featuresDescription($this->features) : [["name" => "", "value" => 0, "description"=>""]],
+            'features'    => isset($this->limit) ? $this->featuresDescription($this->features) : [["name" => "", "value" => 0, "description" => ""]],
             'description' => $this->description ?? "",
             'color'       => $this->color ?? "#ffffff",
         ];
@@ -35,14 +35,14 @@ class RankResource extends JsonResource
     public function getfeatureDescription($features, $feature)
     {
         if ($feature == RanksFeatures::COUPON_PER_MONTH) {
-            $text = "كوبون حسم شهرياً عدد ";
+            $text = __("messages.Ranks.MonthlyCoupons");
             return $text . $features[$feature];
         }
         if ($feature == RanksFeatures::DISCOUNT_ON_DELIVER) {
-            return   "حسم " . $features[$feature] . "% على التوصيل";
+            return  __("messages.Ranks.discount") . $features[$feature] . "%" . __("messages.Ranks.OnDelivery");
         }
         if ($feature == RanksFeatures::DELIVER_PRIORITY) {
-            return OrderPriorities::getNameArabic($features[$feature]) . " في التوصيل";
+            return OrderPriorities::getNameArabic($features[$feature]) . __("messages.Ranks.InDelivery");
         }
 
         return $feature;

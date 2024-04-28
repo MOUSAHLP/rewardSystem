@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CouponResources;
 use App\Enums\CouponTypes;
 use App\Http\Requests\CouponRequest;
 use App\Http\Requests\CouponTypeRequest;
@@ -11,14 +12,16 @@ use App\Models\Coupon;
 use App\Models\CouponType;
 use App\Models\CouponUser;
 use App\Models\Purchase;
+use App\Models\User;
 use App\Services\CouponService;
 use App\Services\PointService;
+use App\Services\RankService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CouponController extends Controller
 {
-    public function __construct(private CouponService $couponService, private PointService $pointService)
+    public function __construct(private CouponService $couponService, private PointService $pointService, private RankService $rankService)
     {
     }
 
@@ -70,29 +73,24 @@ class CouponController extends Controller
 
     public function getFixedValueCoupons()
     {
-        $user_coupons = CouponResource::collection($this->couponService->get_Coupons_By_Type(CouponTypes::FIXED_VALUE));
 
         return $this->successResponse(
-            $user_coupons,
+            CouponResource::collection($this->couponService->get_Coupons_By_Type(CouponTypes::FIXED_VALUE)),
             'dataFetchedSuccessfully'
         );
     }
 
     public function getPercentageCoupons()
     {
-        $user_coupons = CouponResource::collection($this->couponService->get_Coupons_By_Type(CouponTypes::PERCENTAGE));
-
         return $this->successResponse(
-            $user_coupons,
+            CouponResource::collection($this->couponService->get_Coupons_By_Type(CouponTypes::PERCENTAGE)),
             'dataFetchedSuccessfully'
         );
     }
     public function getDeliveryCoupons()
     {
-        $user_coupons = CouponResource::collection($this->couponService->get_Coupons_By_Type(CouponTypes::DELIVERY));
-
         return $this->successResponse(
-            $user_coupons,
+            CouponResource::collection($this->couponService->get_Coupons_By_Type(CouponTypes::DELIVERY)),
             'dataFetchedSuccessfully'
         );
     }
@@ -146,12 +144,12 @@ class CouponController extends Controller
         $validatedData = $request->validated();
 
         $user_total_points = $this->pointService->getUserValidPointsSum($validatedData["user_id"]);
-        [$can_use, $message] = $this->couponService->checkIfUserCanBuyCoupon($request, $user_total_points);
-        if (!$can_use) {
+        [$can_buy, $message] = $this->couponService->checkIfUserCanBuyCoupon($request, $user_total_points);
+        if (!$can_buy) {
             return $this->errorResponse($message, 400);
         }
         return $this->successResponse(
-            $can_use,
+            $can_buy,
             $message
         );
     }
@@ -165,8 +163,8 @@ class CouponController extends Controller
         $coupon_price = $coupon->price;
 
         //check
-        [$can_use, $message] = $this->couponService->checkIfUserCanBuyCoupon($request, $user_total_points);
-        if (!$can_use) {
+        [$can_buy, $message] = $this->couponService->checkIfUserCanBuyCoupon($request, $user_total_points);
+        if (!$can_buy) {
             return $this->errorResponse($message, 400);
         }
 
@@ -194,17 +192,11 @@ class CouponController extends Controller
         ]);
 
         // Add the coupon to the user
-        $coupon = CouponUser::create([
-            "user_id"  => $validatedData["user_id"],
-            "coupon_id" => $validatedData["coupon_id"],
-            "coupon_code" => CouponUser::generateCode(),
-            "used_at"  => null,
-            "expire_at" => Carbon::now()->addDays(90)
-        ]);
+        $coupon = $this->couponService->createUserCoupon($validatedData, CouponResources::PURCHASED);
 
         return $this->successResponse(
-            $coupon,
-            'dataFetchedSuccessfully'
+            (new CouponResource($coupon->coupon))->notUsedCoupon($coupon),
+            'dataAddedSuccessfully'
         );
     }
     public function canUseCoupon(CouponRequest $request)
@@ -275,6 +267,32 @@ class CouponController extends Controller
         );
     }
 
+    public function compensateUserCoupon(CouponRequest $request)
+    {
+        $validatedData = $request->validated();
+        $copon_user = $this->couponService->createUserCoupon($validatedData, CouponResources::COMPENSATION);
+        return $this->successResponse(
+            (new CouponResource($copon_user->coupon))->notUsedCoupon($copon_user),
+            'dataAddedSuccessfully'
+        );
+    }
+
+    public function givePeriodicCoupons(CouponRequest $request)
+    {
+        $users = User::all();
+        foreach ($users as $user) {
+            $coupon_per_month = $this->rankService->getUserCurrentRank($this->pointService->getUserPointsSum($user->id))->features["coupon_per_month"];
+            for ($i = 0; $i < $coupon_per_month; $i++) {
+                $data["coupon_id"] = $request->coupon_id;
+                $data["user_id"] = $user->id;
+                $this->couponService->createUserCoupon($data, CouponResources::PERIODIC);
+            }
+        }
+        return $this->successResponse(
+            null,
+            'dataAddedSuccessfully'
+        );
+    }
     // ============== Coupons Types ============== //
     public function getCouponsTypes()
     {

@@ -22,10 +22,10 @@ class PointFactory extends Factory
 
         $create_date = $this->faker->dateTimeThisMonth;
         $used_date =  $this->faker->boolean ? null : $this->faker->dateTimeBetween($create_date);
-        $expire_date = $used_date == null ?  $this->faker->dateTimeBetween($create_date,'+1 week') : $this->faker->dateTimeBetween($used_date,'+1 months');
+        $expire_date = $used_date == null ?  $this->faker->dateTimeBetween($create_date, '+1 week') : $this->faker->dateTimeBetween($used_date, '+1 months');
         return [
             'user_id' => User::all()->random()->id,
-            'points' =>$points,
+            'points' => $points,
             'used_points' =>  $this->faker->boolean ? 0 : $this->faker->numberBetween(0, $points),
             'achievement_id' => Achievement::all()->random()->id,
             'created_at' => $create_date,

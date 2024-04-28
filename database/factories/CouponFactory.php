@@ -17,12 +17,13 @@ class CouponFactory extends Factory
      */
     public function definition(): array
     {
-        $create_date= $this->faker->dateTimeThisMonth;
+        $create_date = $this->faker->dateTimeThisMonth;
         return [
             'coupon_type_id' => CouponType::all()->random()->id,
-            'value'=> $this->faker->numberBetween(0, 1000),
-            'description'=> $this->faker->sentence,
-            'created_at'=>$create_date,
+            'value' => $this->faker->numberBetween(0, 1000),
+            'price' => $this->faker->numberBetween(0, 1000),
+            'description' => $this->faker->sentence,
+            'created_at' => $create_date,
         ];
     }
 }

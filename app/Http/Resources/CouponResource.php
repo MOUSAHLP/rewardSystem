@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\CouponResources;
 use App\Models\CouponType;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -19,6 +20,12 @@ class CouponResource extends JsonResource
                 $this->coupon_code != null,
                 [
                     "coupon_code" => $this->coupon_code
+                ]
+            ),
+            $this->mergeWhen(
+                $this->coupon_resource != null,
+                [
+                    "coupon_resource" => $this->coupon_resource
                 ]
             ),
             'description'  => $this->description,
@@ -39,31 +46,33 @@ class CouponResource extends JsonResource
 
         ];
     }
-    public function usedCoupon($coupon_code, $expire_at, $used_at)
+    public function usedCoupon($user_coupon)
     {
         return [
             'id'    => $this->id,
             'value' => (int)$this->value,
             'price' => (int) $this->price,
             'coupon_type'  => new CouponTypeResource(CouponType::find($this->coupon_type_id)),
-            'coupon_code' => $coupon_code,
+            'coupon_code' => $user_coupon->coupon_code,
+            'coupon_resource' => CouponResources::getName($user_coupon->coupon_resource),
             'description'  => $this->description,
             'created_at'  => $this->created_at,
-            "used_at" => $used_at,
-            "expire_at" => $expire_at,
+            "used_at" => $user_coupon->used_at,
+            "expire_at" => $user_coupon->expire_at,
         ];
     }
-    public function notUsedCoupon($coupon_code, $expire_at)
+    public function notUsedCoupon($user_coupon)
     {
         return [
             'id'    => $this->id,
             'value' => (int)$this->value,
             'price' => (int) $this->price,
             'coupon_type'  => new CouponTypeResource(CouponType::find($this->coupon_type_id)),
-            'coupon_code' => $coupon_code,
+            'coupon_code' => $user_coupon->coupon_code,
+            'coupon_resource' => CouponResources::getName($user_coupon->coupon_resource),
             'description'  => $this->description,
             'created_at'  => $this->created_at,
-            "expire_at" => $expire_at,
+            "expire_at" => $user_coupon->expire_at,
         ];
     }
 }

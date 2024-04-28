@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('coupon_id');
             $table->foreign('coupon_id')->references('id')->on('coupons')->cascadeOnDelete();
             $table->string('coupon_code');
+            $table->int('coupon_resource');
             $table->dateTime('used_at')->nullable();
             $table->dateTime('expire_at');
         });

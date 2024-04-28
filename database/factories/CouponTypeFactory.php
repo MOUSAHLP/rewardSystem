@@ -17,9 +17,9 @@ class CouponTypeFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'=> $this->faker->name,
-            'image'=> $this->faker->filePath,
-            'is_percentage'=> $this->faker->boolean
+            'name' => $this->faker->name,
+            'image' => $this->faker->filePath,
+            'type' => $this->faker->numberBetween(1, 3),
         ];
     }
 }

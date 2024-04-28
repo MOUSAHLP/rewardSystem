@@ -15,6 +15,7 @@ class CouponUser extends Model
         'user_id',
         'coupon_id',
         'coupon_code',
+        'coupon_resource',
         'used_at',
         'expire_at'
     ];
@@ -25,13 +26,14 @@ class CouponUser extends Model
     }
     public function coupon()
     {
-        return $this->belongsTo(Coupon::class,"coupon_id","id");
+        return $this->belongsTo(Coupon::class, "coupon_id", "id");
     }
 
-    public static function generateCode(){
+    public static function generateCode()
+    {
         $code = str::random(8);
         $exists = CouponUser::where('coupon_code', $code)->count();
-        if($exists > 0){
+        if ($exists > 0) {
             CouponUser::generateCode();
         }
         return $code;

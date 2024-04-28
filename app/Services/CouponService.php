@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\CouponResources;
 use App\Http\Resources\CouponResource;
 use App\Models\Coupon;
 use App\Models\CouponType;
@@ -21,14 +22,14 @@ class CouponService
                 ->where("used_at", "!=", null)
                 ->with(["coupon", "coupon.couponType"])->get()
                 ->map(function ($model) {
-                    return (new CouponResource($model->coupon))->usedCoupon($model->coupon_code, $model->expire_at,$model->used_at);
+                    return (new CouponResource($model->coupon))->usedCoupon($model);
                 });
         } else {
             return CouponUser::where("user_id", $user_id)
                 ->where("used_at", null)
                 ->with(["coupon", "coupon.couponType"])->get()
                 ->map(function ($model) {
-                    return (new CouponResource($model->coupon))->notUsedCoupon($model->coupon_code, $model->expire_at);
+                    return (new CouponResource($model->coupon))->notUsedCoupon($model);
                 });
         }
     }
@@ -41,7 +42,7 @@ class CouponService
             ->whereDate('expire_at', '<', Carbon::now())
             ->get()
             ->map(function ($model) {
-                return (new CouponResource($model->coupon))->notUsedCoupon($model->coupon_code, $model->expire_at);
+                return (new CouponResource($model->coupon))->notUsedCoupon($model);
             });
     }
     public static function get_Coupons_By_Type($coupon_type)
@@ -129,6 +130,19 @@ class CouponService
             'dataFetchedSuccessfully'
         ];
     }
+
+    public static function createUserCoupon($data,$type=CouponResources::PURCHASED)
+    {
+     return CouponUser::create([
+            "user_id"  => $data["user_id"],
+            "coupon_id" => $data["coupon_id"],
+            "coupon_code" => CouponUser::generateCode(),
+            "coupon_resource" =>$type,
+            "used_at"  => null,
+            "expire_at" => Carbon::now()->addDays(90)
+        ]);
+    }
+
     public static function checkIfUserExists($user_id)
     {
         return User::where("id", $user_id)->count() == 0;

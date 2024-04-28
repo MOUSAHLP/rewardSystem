@@ -28,6 +28,8 @@ class CouponRequest extends FormRequest
             'canUseCoupon'   =>  $this->getuseCouponRules(),
             'useCoupon'   =>  $this->getuseCouponRules(),
             'buyAndUseCoupon'   =>  $this->getbuyCouponRules(),
+            'compensateUserCoupon'   =>  $this->getbuyCouponRules(),
+            'givePeriodicCoupons'   =>  $this->getgivePeriodicCouponsRules(),
         };
     }
 
@@ -80,6 +82,12 @@ class CouponRequest extends FormRequest
         return [
             "user_id" => "required|integer|exists:users,id",
             "coupon_code" => "required|exists:coupons_users,coupon_code"
+        ];
+    }
+    public function getgivePeriodicCouponsRules()
+    {
+        return [
+            "coupon_id" => "required|integer|exists:coupons,id"
         ];
     }
 

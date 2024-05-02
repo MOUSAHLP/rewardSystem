@@ -143,6 +143,12 @@ class CouponService
         ]);
     }
 
+    public static function couponsReport()
+    {
+        $coupons = Coupon::withCount("purchases")->get();
+        return  CouponResource::collection($coupons);
+    }
+
     public static function checkIfUserExists($user_id)
     {
         return User::where("id", $user_id)->count() == 0;

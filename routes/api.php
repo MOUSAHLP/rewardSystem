@@ -97,7 +97,10 @@ Route::group([
 
         // to give users coupons periodicly based on thier rank
         Route::post('/give-periodic-coupons', 'givePeriodicCoupons');
-        
+
+        // Coupons Report About The Most Used Coupons
+        Route::get('/report', 'couponsReport');
+
         // Coupons Types
         Route::group([
             'prefix' => "types",

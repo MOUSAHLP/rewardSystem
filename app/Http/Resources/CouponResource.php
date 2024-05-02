@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Enums\CouponResources;
+use App\Enums\CouponTypes;
 use App\Models\CouponType;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -10,6 +11,14 @@ class CouponResource extends JsonResource
 {
 
     public function toArray($request)
+    {
+        $actionMethod = $request->route()->getActionMethod();
+        return match ($actionMethod) {
+            'couponsReport' => $this->CouponReportResource(),
+            default => $this->defaultResource(),
+        };
+    }
+    public function defaultResource()
     {
         return [
             'id'    => $this->id,
@@ -74,5 +83,29 @@ class CouponResource extends JsonResource
             'created_at'  => $this->created_at,
             "expire_at" => $user_coupon->expire_at,
         ];
+    }
+
+    public function CouponReportResource()
+    {
+        return [
+            'id'    => $this->id,
+            'label' => $this->getCouponLabel($this),
+            'count'  => $this->purchases_count,
+        ];
+    }
+
+    public function getCouponLabel($coupon)
+    {
+        $type = CouponType::find($coupon->coupon_type_id)->type;
+        if ($type == CouponTypes::FIXED_VALUE) {
+            return __("messages.coupons.discount").$coupon->value;
+        }
+        if ($type == CouponTypes::PERCENTAGE) {
+            return __("messages.coupons.discountOnProducts").$coupon->value;
+        }
+        if ($type == CouponTypes::DELIVERY) {
+            return __("messages.coupons.discountOnDelivery").$coupon->value;
+        }
+        return __("messages.coupons.discount").$coupon->value;
     }
 }

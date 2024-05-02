@@ -293,6 +293,16 @@ class CouponController extends Controller
             'dataAddedSuccessfully'
         );
     }
+
+    public function couponsReport()
+    {
+        return $this->successResponse(
+            // CouponResource::collection($this->couponService->couponsReport()),
+            $this->couponService->couponsReport(),
+            'dataFetchedSuccessfully'
+        );
+    }
+
     // ============== Coupons Types ============== //
     public function getCouponsTypes()
     {

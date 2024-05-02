@@ -42,6 +42,9 @@ return [
         "CouponExpired" => "القسيمة منتهية الصلاحية",
         "CouponUsed" => "القسيمة مستخدمة بالفعل",
 
+        "discount" => "خصم بقيمة ",
+        "discountOnProducts" => "حسم على المنتجات %",
+        "discountOnDelivery" => "حسم على التوصيل %",
     ],
 
     // Achievements

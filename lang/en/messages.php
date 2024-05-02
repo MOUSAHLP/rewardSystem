@@ -43,6 +43,10 @@ return [
         "CouponExpired" => "Coupon Is Expired",
         "CouponUsed" => "Coupon Has Already Been Used",
 
+        "discount" => "Discount ",
+        "discountOnProducts" => "Discount On Products %",
+        "discountOnDelivery" => "Discount On Delivery %",
+
     ],
     // Achievements
     "achievementAlreadyDone" => "Achievement Already Done",

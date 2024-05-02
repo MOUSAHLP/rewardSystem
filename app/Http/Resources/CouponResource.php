@@ -90,7 +90,7 @@ class CouponResource extends JsonResource
         return [
             'id'    => $this->id,
             'label' => $this->getCouponLabel($this),
-            'count'  => $this->purchases_count,
+            'count'  => (int)$this->purchases_count,
         ];
     }
 

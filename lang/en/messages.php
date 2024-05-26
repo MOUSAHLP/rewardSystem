@@ -48,6 +48,11 @@ return [
         "discountOnDelivery" => "Discount On Delivery %",
 
     ],
+    "couponsResources" => [
+        "PURCHASED" => "Purchased",
+        "COMPENSATION" => "Compensation",
+        "PERIODIC" => "Periodic",
+    ],
     // Achievements
     "achievementAlreadyDone" => "Achievement Already Done",
 

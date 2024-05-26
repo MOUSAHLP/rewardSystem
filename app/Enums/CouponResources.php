@@ -14,6 +14,11 @@ class CouponResources
         return $constants[$value] ?? null;
     }
 
+    public static function getTranslatedName($value)
+    {
+        return __("messages.couponsResources.".self::getName($value));
+    }
+
     public static function getValue($name)
     {
         return defined('self::' . $name) ? constant('self::' . $name) : null;

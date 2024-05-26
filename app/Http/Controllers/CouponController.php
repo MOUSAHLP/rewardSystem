@@ -297,8 +297,31 @@ class CouponController extends Controller
     public function couponsReport()
     {
         return $this->successResponse(
-            // CouponResource::collection($this->couponService->couponsReport()),
             $this->couponService->couponsReport(),
+            'dataFetchedSuccessfully'
+        );
+    }
+
+    public function purchasedCouponsReport()
+    {
+        return $this->successResponse(
+            $this->couponService->resourceCouponsReport(CouponResources::PURCHASED),
+            'dataFetchedSuccessfully'
+        );
+    }
+
+    public function compensationCouponsReport()
+    {
+        return $this->successResponse(
+            $this->couponService->resourceCouponsReport(CouponResources::COMPENSATION),
+            'dataFetchedSuccessfully'
+        );
+    }
+
+    public function periodicCouponsReport()
+    {
+        return $this->successResponse(
+            $this->couponService->resourceCouponsReport(CouponResources::PERIODIC),
             'dataFetchedSuccessfully'
         );
     }

@@ -6,9 +6,11 @@ use App\Http\Requests\PointRequest;
 use App\Http\Resources\PointResource;
 use App\Http\Resources\RankResource;
 use App\Models\PointInPound;
+use App\Models\Purchase;
 use Illuminate\Http\Request;
 use App\Services\PointService;
 use App\Services\RankService;
+use Illuminate\Support\Facades\DB;
 
 class PointsController extends Controller
 {
@@ -43,21 +45,21 @@ class PointsController extends Controller
             return $this->errorResponse("users.NotFound", 400);
         }
 
-            $user_points = $this->pointService->getUserPointsSum($request->user_id);
-            $points_value = $this->pointService->getPointsValue($user_points);
-            $user_rank =new RankResource( $this->rankService->getUserCurrentRank($user_points));
-            $user_next_rank = new RankResource($this->rankService->getUserNextRank($user_points));
+        $user_points = $this->pointService->getUserPointsSum($request->user_id);
+        $points_value = $this->pointService->getPointsValue($user_points);
+        $user_rank = new RankResource($this->rankService->getUserCurrentRank($user_points));
+        $user_next_rank = new RankResource($this->rankService->getUserNextRank($user_points));
 
-            $data = [
-                "user_points" => $user_points,
-                "points_value" => $points_value,
-                "user_rank" => $user_rank,
-                "user_next_rank" => $user_next_rank,
-            ];
-            return $this->successResponse(
-                $data,
-                'dataFetchedSuccessfully'
-            );
+        $data = [
+            "user_points" => $user_points,
+            "points_value" => $points_value,
+            "user_rank" => $user_rank,
+            "user_next_rank" => $user_next_rank,
+        ];
+        return $this->successResponse(
+            $data,
+            'dataFetchedSuccessfully'
+        );
     }
 
     public function getUserTotalPoints(Request $request)
@@ -114,6 +116,15 @@ class PointsController extends Controller
             'dataFetchedSuccessfully'
         );
     }
+
+    public function usedPointsReport()
+    {
+        return $this->successResponse(
+            PointResource::collection($this->pointService->usedPointsReport()),
+            'dataFetchedSuccessfully'
+        );
+    }
+
     public function addPointsToUser(PointRequest $request)
     {
         $validatedData = $request->validated();
@@ -136,12 +147,10 @@ class PointsController extends Controller
     public function setPointsValue(PointRequest $request)
     {
         $validatedData = $request->validated();
-        $points_value = PointInPound::first()->update(["value"=>$validatedData["value"]]);
+        $points_value = PointInPound::first()->update(["value" => $validatedData["value"]]);
         return $this->successResponse(
             $points_value,
             'dataUpdatedSuccessfully'
         );
     }
-
-
 }

@@ -149,6 +149,16 @@ class CouponService
         return  CouponResource::collection($coupons);
     }
 
+    public static function  resourceCouponsReport($resource)
+    {
+        $coupons = CouponUser::where("coupon_resource",$resource)->count();
+
+        return  [
+            "label"=>CouponResources::getTranslatedName($resource),
+            "value"=>$coupons
+        ];
+    }
+
     public static function checkIfUserExists($user_id)
     {
         return User::where("id", $user_id)->count() == 0;

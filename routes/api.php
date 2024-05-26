@@ -34,6 +34,8 @@ Route::group([
         Route::get('expired/user/{user_id}', 'getUserExpiredPoints');
         Route::get('used/user/{user_id}', 'getUserUsedPoints');
 
+        Route::get('/used-report', 'usedPointsReport');
+
         Route::post('/add-points', 'addPointsToUser');
 
         Route::get('/value', 'getPointsValue');
@@ -100,6 +102,11 @@ Route::group([
 
         // Coupons Report About The Most Used Coupons
         Route::get('/report', 'couponsReport');
+
+        // Coupons Report Based On Resource
+        Route::get('/purchased-report', 'purchasedCouponsReport');
+        Route::get('/compensation-report', 'compensationCouponsReport');
+        Route::get('/periodic-report', 'periodicCouponsReport');
 
         // Coupons Types
         Route::group([

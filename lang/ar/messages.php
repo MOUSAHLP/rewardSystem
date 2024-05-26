@@ -46,6 +46,11 @@ return [
         "discountOnProducts" => "حسم على المنتجات %",
         "discountOnDelivery" => "حسم على التوصيل %",
     ],
+    "couponsResources" => [
+        "PURCHASED" => "مشتراه",
+        "COMPENSATION" => "تعويض",
+        "PERIODIC" => "دورية",
+    ],
 
     // Achievements
     "achievementAlreadyDone" => "الإنجاز مكتمل",

@@ -9,6 +9,14 @@ class PointResource extends JsonResource
 {
     public function toArray($request)
     {
+        $actionMethod = $request->route()->getActionMethod();
+        return match ($actionMethod) {
+            'usedPointsReport' => $this->usedPointsReport(),
+            default => $this->defaultResource(),
+        };
+    }
+    public function defaultResource()
+    {
         return [
             'id'              => $this->id,
             'user_id'         => $this->user_id,
@@ -25,4 +33,14 @@ class PointResource extends JsonResource
     {
         return  $expire_at < Carbon::now();
     }
+
+    public function usedPointsReport()
+    {
+        return [
+            'points'     => (int)$this->points,
+            'week'       => $this->week,
+            'year'       => $this->year,
+        ];
+    }
+
 }

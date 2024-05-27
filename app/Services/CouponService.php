@@ -76,11 +76,11 @@ class CouponService
         $coupon = Coupon::where("id", $validatedData["coupon_id"])->get()->first();
 
         // check if the coupon price is greater than user's points
-        if ($user_total_points > $coupon->price) {
+        if ($user_total_points < $coupon->price) {
             return [
                 false,
                 __("messages.coupons.NoEnoughPoints") . " " . __("messages.coupons.your_points") . " " . $user_total_points . " " . __("messages.coupons.point")
-            ];  
+            ];
         }
 
         return   [

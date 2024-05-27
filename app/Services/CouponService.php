@@ -76,11 +76,11 @@ class CouponService
         $coupon = Coupon::where("id", $validatedData["coupon_id"])->get()->first();
 
         // check if the coupon price is greater than user's points
-        if ($user_total_points < $coupon->price) {
+        if ($user_total_points > $coupon->price) {
             return [
                 false,
-                "coupons.NoEnoughPoints"
-            ];
+                __("messages.coupons.NoEnoughPoints") . " " . __("messages.coupons.your_points") . " " . $user_total_points . " " . __("messages.coupons.point")
+            ];  
         }
 
         return   [
@@ -131,13 +131,13 @@ class CouponService
         ];
     }
 
-    public static function createUserCoupon($data,$type=CouponResources::PURCHASED)
+    public static function createUserCoupon($data, $type = CouponResources::PURCHASED)
     {
-     return CouponUser::create([
+        return CouponUser::create([
             "user_id"  => $data["user_id"],
             "coupon_id" => $data["coupon_id"],
             "coupon_code" => CouponUser::generateCode(),
-            "coupon_resource" =>$type,
+            "coupon_resource" => $type,
             "used_at"  => null,
             "expire_at" => Carbon::now()->addDays(90)
         ]);
@@ -151,11 +151,11 @@ class CouponService
 
     public static function  resourceCouponsReport($resource)
     {
-        $coupons = CouponUser::where("coupon_resource",$resource)->count();
+        $coupons = CouponUser::where("coupon_resource", $resource)->count();
 
         return  [
-            "label"=>CouponResources::getTranslatedName($resource),
-            "value"=>$coupons
+            "label" => CouponResources::getTranslatedName($resource),
+            "value" => $coupons
         ];
     }
 

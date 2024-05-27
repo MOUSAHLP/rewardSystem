@@ -38,6 +38,8 @@ return [
     "coupons" => [
         "HasNOPrice" => "هذه القسيمة ليس لديها سعر",
         "NoEnoughPoints" => "النقاط غير كافية",
+        "your_points" => "نقاطك",
+        "point" => "نقطة",
         "YouDontHaveThisCoupon" => "ليس لديك هذه القسيمة",
         "CouponExpired" => "القسيمة منتهية الصلاحية",
         "CouponUsed" => "القسيمة مستخدمة بالفعل",

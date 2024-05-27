@@ -39,6 +39,8 @@ return [
     "coupons" => [
         "HasNOPrice" => "This Coupon Has NO Price",
         "NoEnoughPoints" => "No Enough Points",
+        "your_points" => "Your Points",
+        "point" => "Point",
         "YouDontHaveThisCoupon" => "You Dont Have This Coupon",
         "CouponExpired" => "Coupon Is Expired",
         "CouponUsed" => "Coupon Has Already Been Used",

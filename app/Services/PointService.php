@@ -57,17 +57,18 @@ class PointService
 
     public function usedPointsReport()
     {
+
         return Purchase::select([
             DB::raw('sum(points) as points'),
-            DB::raw('week(created_at) as week'),
+            DB::raw('month(created_at) as month'),
             DB::raw('year(created_at) as year')
         ])
-        ->when(request('year'), function ($query) {
-            $query->whereYear('created_at', request('year'));
+        ->when(request()->has('year'), function ($query) {
+            $query->whereYear('created_at', request()->year);
         }, function ($query) {
             $query->whereYear('created_at', now()->format('Y'));
         })
-        ->groupBy([ 'year', 'week'])
+        ->groupBy([ 'year', 'month'])
         ->get() ;
     }
 

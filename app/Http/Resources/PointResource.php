@@ -38,7 +38,7 @@ class PointResource extends JsonResource
     {
         return [
             'points'     => (int)$this->points,
-            'week'       => $this->week,
+            'month'       => $this->month,
             'year'       => $this->year,
         ];
     }

@@ -18,14 +18,14 @@ class PointService
     public function getUserPointsSum($user_id)
     {
         return intval(Point::where("user_id", $user_id)
-        ->sum("points"));
+            ->sum("points"));
     }
     public function getUserValidPointsSum($user_id)
     {
         return intval(Point::where("user_id", $user_id)
-        ->where("used_at", null)
-        ->whereDate('expire_at', '>', Carbon::now())
-        ->selectRaw('SUM(points - used_points) as total_points')->first()->total_points);
+            ->where("used_at", null)
+            ->whereDate('expire_at', '>', Carbon::now())
+            ->selectRaw('SUM(points - used_points) as total_points')->first()->total_points);
     }
 
     public function getPointsValue($user_points)
@@ -38,7 +38,7 @@ class PointService
         return Point::where("user_id", $user_id)
             ->where("used_at", NULL)
             ->whereDate('expire_at', '>', Carbon::now())
-            ->orderBy("expire_at" , "ASC")
+            ->orderBy("expire_at", "ASC")
             ->get();
     }
 
@@ -63,13 +63,13 @@ class PointService
             DB::raw('month(created_at) as month'),
             DB::raw('year(created_at) as year')
         ])
-        ->when(request()->has('year'), function ($query) {
-            $query->whereYear('created_at', request()->year);
-        }, function ($query) {
-            $query->whereYear('created_at', now()->format('Y'));
-        })
-        ->groupBy([ 'year', 'month'])
-        ->get() ;
+            ->when(request()->has('year') && request()->year != "", function ($query) {
+                $query->whereYear('created_at', request()->year);
+            }, function ($query) {
+                $query->whereYear('created_at', Carbon::now()->format('Y'));
+            })
+            ->groupBy(['year', 'month'])
+            ->get();
     }
 
     public static function createPoint($validatedData)

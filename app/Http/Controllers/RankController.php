@@ -106,7 +106,7 @@ class RankController extends Controller
 
         $validatedData = $request->validated();
 
-        Rank::where("id", $validatedData["id"])->update($validatedData);
+        Rank::find( $validatedData["id"])->update($validatedData);
 
         return $this->successResponse(
             [],

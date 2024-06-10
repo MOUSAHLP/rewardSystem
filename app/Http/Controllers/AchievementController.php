@@ -94,7 +94,7 @@ class AchievementController extends Controller
         $achievement->save();
 
         return $this->successResponse(
-            $achievement,
+            new AchievementResource($achievement),
             'dataAddedSuccessfully'
         );
     }
@@ -135,7 +135,7 @@ class AchievementController extends Controller
         ]);
 
         return $this->successResponse(
-            $achievement,
+            new AchievementResource($achievement),
             'dataUpdatedSuccessfully'
         );
     }

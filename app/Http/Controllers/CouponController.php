@@ -109,7 +109,7 @@ class CouponController extends Controller
     public function updateCoupon(CouponRequest $request)
     {
         $validatedData = $request->validated();
-        Coupon::where("id", $validatedData["id"])->update($validatedData);
+        Coupon::find($validatedData["id"])->update($validatedData);
 
         return $this->successResponse(
             [],
@@ -381,7 +381,7 @@ class CouponController extends Controller
     public function updatecouponsType(CouponTypeRequest $request)
     {
         $validatedData = $request->validated();
-        $couponstype = CouponType::where("id", $validatedData["id"]);
+        $couponstype = CouponType::find( $validatedData["id"]);
 
         $fileNameWithExt = $request->file('image')->getClientOriginalName();
         $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
